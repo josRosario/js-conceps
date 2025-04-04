@@ -87,3 +87,158 @@ const p1 = Promise.reject('Error 1');
     .catch(console.error)
 ```
 
+---
+
+# ⚙️ Tipos de Funciones en JavaScript
+
+JavaScript permite declarar funciones de múltiples maneras, cada una con sus particularidades en cuanto a sintaxis, comportamiento y uso. Esta guía resume todos los tipos de funciones con ejemplos claros y precisos.
+
+---
+
+## 🧱 1. Función Declarada (Function Declaration)
+
+```js
+function saludar(nombre) {
+  return `Hola, ${nombre}`;
+}
+
+```
+- ✅ Se puede llamar antes de ser definida (hoisting).
+
+- ✅ Tiene su propio this.
+
+- ✅ Ideal para funciones reutilizables.
+
+
+## 🧾 2. Función Expresada (Function Expression)
+
+```js
+const despedir = function(nombre) {
+  return `Adiós, ${nombre}`;
+};
+
+```
+
+- ❌ No tiene hoisting.
+
+- 📦 Asignada a una variable.
+
+- 🔍 Puede ser anónima o con nombre (útil para depuración).
+
+ ## 🎯 3. Arrow Function (Función de Flecha) 
+
+ ```js
+const sumar = (a, b) => a + b;
+
+const saludar = (nombre) => {
+  const mensaje = `Hola, ${nombre}`;
+  return mensaje;
+};
+
+```
+
+- ⚡ Sintaxis más corta.
+
+- ❌ No tiene su propio this, arguments, ni super.
+
+- ✅ Ideal para callbacks y funciones de una sola línea.
+
+
+## 🌀 4. Función Generadora (Generator Function)
+
+```js
+function* generador() {
+  yield 1;
+  yield 2;
+  yield 3;
+}
+```
+
+- 🔁 Se puede pausar y reanudar con yield.
+
+- ✅ Devuelve un iterador que se maneja con next().
+
+- Útil para secuencias controladas y procesamiento paso a paso.
+
+## ⏳ 5. Función Asíncrona (Async Function)
+
+```js
+async function obtenerDatos() {
+  const respuesta = await fetch('https://api.com');
+  return await respuesta.json();
+}
+```
+
+- ⏱️ Siempre retorna una promesa.
+
+- ✅ Puede usar await para operaciones asíncronas.
+
+- ✅ Uso moderno y legible para trabajar con Promesas.
+
+## ⚡ 6. IIFE (Immediately Invoked Function Expression)
+```js
+(function () {
+  console.log('Soy una IIFE');
+})();
+```
+
+- 🚀 Se ejecuta inmediatamente tras definirse.
+
+- 🔒 Crea un ámbito privado.
+
+- ✅ Común en patrones de módulos y librerías.
+
+También puede usarse como función de flecha:
+```js
+(() => {
+  console.log('IIFE con arrow');
+})();
+```
+
+## 🧠 7. Método en Objeto
+```js
+const persona = {
+  nombre: 'Ana',
+  saludar() {
+    return `Hola, soy ${this.nombre}`;
+  }
+};
+```
+
+- 📦 Declarado como propiedad de un objeto.
+
+- ✅ Tiene acceso a this del objeto contenedor.
+
+- Común en programación orientada a objetos.
+
+
+## 🧩 8. Función como Propiedad (Function Expression en objeto)
+
+```js
+const calculadora = {
+  sumar: function(a, b) {
+    return a + b;
+  }
+};
+```
+
+- 🔧 Función asignada como propiedad.
+
+- ✅ Similar a la función expresada pero dentro de un objeto.
+
+
+## 🏗️ 9. Función Constructora
+
+```js
+function Persona(nombre) {
+  this.nombre = nombre;
+}
+
+const juan = new Persona('Juan');
+```
+
+- 🏗️ Usada con new para crear instancias.
+
+- ✅ Define propiedades y métodos en objetos.
+
+- 📌 Reemplazada en muchos casos por class, pero sigue siendo válida.
