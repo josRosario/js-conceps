@@ -1057,3 +1057,332 @@ En este ejemplo:
 | **Herencia**            | Se logra extendiendo prototipos mediante `Object.create` o clases modernas. |
 
 El **prototype** y la **prototype chain** son esenciales para entender cómo funciona la herencia y la reutilización de código en JavaScript.
+
+---
+La **manipulación del DOM (Document Object Model)** en JavaScript permite interactuar con los elementos HTML de una página web. Esto incluye tareas como seleccionar elementos, modificar su contenido, estilos, atributos, o incluso agregar y eliminar elementos.
+
+---
+
+### **1. Seleccionar elementos del DOM**
+
+Para manipular el DOM, primero necesitas seleccionar los elementos. JavaScript ofrece varios métodos para hacerlo:
+
+#### **Ejemplos:**
+```javascript
+// Seleccionar por ID
+const elementById = document.getElementById("myId");
+
+// Seleccionar por clase
+const elementsByClass = document.getElementsByClassName("myClass");
+
+// Seleccionar por etiqueta
+const elementsByTag = document.getElementsByTagName("div");
+
+// Seleccionar usando selectores CSS
+const elementQuery = document.querySelector(".myClass"); // Selecciona el primer elemento
+const elementsQueryAll = document.querySelectorAll(".myClass"); // Selecciona todos los elementos
+```
+
+---
+
+### **2. Modificar contenido y texto**
+
+Puedes cambiar el contenido o texto de un elemento usando propiedades como `innerHTML` o `textContent`.
+
+#### **Ejemplos:**
+```javascript
+// Cambiar el contenido HTML
+const myDiv = document.getElementById("myDiv");
+myDiv.innerHTML = "<p>Nuevo contenido HTML</p>";
+
+// Cambiar solo el texto
+myDiv.textContent = "Nuevo texto sin HTML";
+```
+
+---
+
+### **3. Modificar atributos**
+
+Puedes agregar, cambiar o eliminar atributos de un elemento.
+
+#### **Ejemplos:**
+```javascript
+const myImage = document.querySelector("img");
+
+// Cambiar el atributo src
+myImage.setAttribute("src", "new-image.jpg");
+
+// Obtener un atributo
+console.log(myImage.getAttribute("src"));
+
+// Eliminar un atributo
+myImage.removeAttribute("alt");
+```
+
+---
+
+### **4. Modificar estilos**
+
+Puedes cambiar los estilos de un elemento directamente a través de la propiedad `style` o agregando clases.
+
+#### **Ejemplos:**
+```javascript
+const myButton = document.querySelector("button");
+
+// Cambiar estilos directamente
+myButton.style.backgroundColor = "blue";
+myButton.style.color = "white";
+
+// Agregar o quitar clases
+myButton.classList.add("active");
+myButton.classList.remove("inactive");
+
+// Alternar clases
+myButton.classList.toggle("highlight");
+```
+
+---
+
+### **5. Crear y agregar elementos**
+
+Puedes crear nuevos elementos y agregarlos al DOM.
+
+#### **Ejemplos:**
+```javascript
+// Crear un nuevo elemento
+const newElement = document.createElement("p");
+newElement.textContent = "Soy un nuevo párrafo";
+
+// Agregarlo al DOM
+const container = document.getElementById("container");
+container.appendChild(newElement);
+
+// Insertar antes de otro elemento
+const referenceElement = document.getElementById("reference");
+container.insertBefore(newElement, referenceElement);
+```
+
+---
+
+### **6. Eliminar elementos**
+
+Puedes eliminar elementos del DOM usando `removeChild` o `remove`.
+
+#### **Ejemplos:**
+```javascript
+const elementToRemove = document.getElementById("removeMe");
+
+// Usando removeChild
+elementToRemove.parentNode.removeChild(elementToRemove);
+
+// Usando remove (moderno)
+elementToRemove.remove();
+```
+
+---
+
+### **7. Manejar eventos**
+
+Puedes agregar eventos a los elementos para que respondan a interacciones del usuario.
+
+#### **Ejemplos:**
+```javascript
+const myButton = document.getElementById("myButton");
+
+// Agregar un evento de clic
+myButton.addEventListener("click", function () {
+    alert("¡Botón clickeado!");
+});
+
+// Usar una función externa
+function handleClick() {
+    console.log("Botón clickeado");
+}
+myButton.addEventListener("click", handleClick);
+```
+
+---
+
+### **Ejemplo completo: Manipulación del DOM**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manipulación del DOM</title>
+</head>
+<body>
+    <div id="container">
+        <h1 id="title">Título original</h1>
+        <button id="changeTitle">Cambiar Título</button>
+    </div>
+
+    <script>
+        // Seleccionar elementos
+        const title = document.getElementById("title");
+        const button = document.getElementById("changeTitle");
+
+        // Agregar un evento al botón
+        button.addEventListener("click", function () {
+            // Cambiar el texto del título
+            title.textContent = "Título cambiado con JavaScript";
+
+            // Cambiar el estilo del título
+            title.style.color = "red";
+        });
+    </script>
+</body>
+</html>
+```
+
+---
+
+### **Resumen**
+
+| Tarea                          | Método/Propiedad                          |
+|--------------------------------|-------------------------------------------|
+| Seleccionar elementos          | `getElementById`, `querySelector`, etc.   |
+| Cambiar contenido              | `innerHTML`, `textContent`                |
+| Modificar atributos            | `setAttribute`, `getAttribute`, `removeAttribute` |
+| Cambiar estilos                | `style`, `classList`                      |
+| Crear y agregar elementos      | `createElement`, `appendChild`, `insertBefore` |
+| Eliminar elementos             | `removeChild`, `remove`                   |
+| Manejar eventos                | `addEventListener`                        |
+
+La manipulación del DOM es esencial para crear aplicaciones web dinámicas e interactivas.
+
+---
+
+### **Evento Bubbling y Event Delegation en JavaScript**
+
+---
+
+### **1. ¿Qué es el Evento Bubbling?**
+
+El **evento bubbling** (propagación de eventos) es un comportamiento en el que un evento que ocurre en un elemento hijo se propaga hacia sus elementos padres, subiendo por la jerarquía del DOM hasta el elemento raíz (`document`).
+
+#### **Ejemplo de Evento Bubbling**
+```html
+<div id="parent" style="padding: 20px; background-color: lightblue;">
+    Parent
+    <button id="child">Child Button</button>
+</div>
+
+<script>
+    const parent = document.getElementById("parent");
+    const child = document.getElementById("child");
+
+    // Evento en el elemento padre
+    parent.addEventListener("click", () => {
+        console.log("Parent clicked");
+    });
+
+    // Evento en el elemento hijo
+    child.addEventListener("click", () => {
+        console.log("Child clicked");
+    });
+</script>
+```
+
+#### **Salida al hacer clic en el botón `Child`**:
+1. "Child clicked" (se ejecuta el evento del botón).
+2. "Parent clicked" (el evento se propaga al padre).
+
+Esto ocurre porque el evento se "burbujea" desde el elemento hijo (`button`) hacia el padre (`div`).
+
+---
+
+### **2. ¿Qué es Event Delegation?**
+
+La **delegación de eventos** es una técnica que aprovecha el bubbling para manejar eventos de múltiples elementos hijos desde un único evento en el elemento padre. En lugar de agregar un evento a cada hijo, se agrega un único evento al padre y se utiliza la propiedad `event.target` para identificar el elemento que disparó el evento.
+
+#### **Ventajas de Event Delegation**:
+- Mejora el rendimiento al reducir el número de listeners.
+- Útil para manejar elementos dinámicos (que se crean después de cargar la página).
+
+---
+
+#### **Ejemplo de Event Delegation**
+```html
+<div id="parent" style="padding: 20px; background-color: lightgreen;">
+    <button class="child">Button 1</button>
+    <button class="child">Button 2</button>
+    <button class="child">Button 3</button>
+</div>
+
+<script>
+    const parent = document.getElementById("parent");
+
+    // Delegación de eventos en el padre
+    parent.addEventListener("click", (event) => {
+        if (event.target.classList.contains("child")) {
+            console.log(`Clicked on: ${event.target.textContent}`);
+        }
+    });
+</script>
+```
+
+#### **Salida al hacer clic en un botón**:
+Si haces clic en "Button 2", el resultado será:
+```
+Clicked on: Button 2
+```
+
+En este caso:
+1. El evento se escucha en el `div` padre.
+2. Usamos `event.target` para identificar cuál de los botones fue clickeado.
+
+---
+
+### **Diferencias entre Bubbling y Delegation**
+
+| **Concepto**            | **Evento Bubbling**                                      | **Event Delegation**                                  |
+|--------------------------|---------------------------------------------------------|------------------------------------------------------|
+| **Definición**           | Propagación de eventos desde el hijo hacia el padre.    | Técnica para manejar eventos en múltiples hijos desde el padre. |
+| **Uso**                 | Ocurre automáticamente en eventos como `click`.         | Se implementa manualmente usando bubbling.           |
+| **Listeners**            | Se agregan a cada elemento individualmente.             | Se agrega un único listener al padre.                |
+| **Escalabilidad**        | Menos eficiente si hay muchos elementos.                | Más eficiente, especialmente con elementos dinámicos. |
+
+---
+
+### **3. Detener el Evento Bubbling**
+
+Si no deseas que un evento se propague hacia los elementos padres, puedes usar el método `event.stopPropagation()`.
+
+#### **Ejemplo: Detener el bubbling**
+```html
+<div id="parent" style="padding: 20px; background-color: lightcoral;">
+    Parent
+    <button id="child">Child Button</button>
+</div>
+
+<script>
+    const parent = document.getElementById("parent");
+    const child = document.getElementById("child");
+
+    parent.addEventListener("click", () => {
+        console.log("Parent clicked");
+    });
+
+    child.addEventListener("click", (event) => {
+        console.log("Child clicked");
+        event.stopPropagation(); // Detiene el bubbling
+    });
+</script>
+```
+
+#### **Salida al hacer clic en el botón `Child`**:
+1. "Child clicked" (el evento del botón se ejecuta).
+2. El evento del padre no se ejecuta porque el bubbling fue detenido.
+
+---
+
+### **Resumen**
+
+- **Evento Bubbling**: Es el comportamiento predeterminado donde los eventos se propagan desde el hijo hacia los padres.
+- **Event Delegation**: Técnica que aprovecha el bubbling para manejar eventos de múltiples elementos desde un único listener.
+- **`event.stopPropagation()`**: Detiene la propagación del evento hacia los elementos padres.
+
+Ambos conceptos son esenciales para manejar eventos de manera eficiente en aplicaciones web dinámicas.
