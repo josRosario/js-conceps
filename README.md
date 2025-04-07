@@ -535,3 +535,69 @@ En **JavaScript**, **`this`** es una palabra clave especial que hace referencia 
 
 ### Nota clave:
 El valor de `this` **depende del contexto de ejecución**, y puede cambiar dependiendo de cómo se llame la función o método. Si tienes dudas, puedes usar `console.log(this)` para inspeccionar su valor en diferentes contextos.
+
+En JavaScript, `call`, `apply` y `bind` son métodos que permiten manipular el valor de `this` en funciones. Aquí te explico cada uno con ejemplos y una tabla comparativa:
+
+---
+
+### **1. `call`**
+El método `call` invoca una función con un valor específico de `this` y permite pasar argumentos de forma individual.
+
+```javascript
+function greet(greeting) {
+    console.log(`${greeting}, I am ${this.name}`);
+}
+
+const person = { name: "Alice" };
+
+greet.call(person, "Hello"); // Output: "Hello, I am Alice"
+```
+
+En este ejemplo, usamos call para que this dentro de la función greet apunte al objeto person.
+
+---
+
+### **2. `apply`**
+El método `apply` es similar a `call`, pero los argumentos se pasan como un array o un objeto similar a un array.
+
+```javascript
+function greet(greeting, punctuation) {
+    console.log(`${greeting}, I am ${this.name}${punctuation}`);
+}
+
+const person = { name: "Bob" };
+
+greet.apply(person, ["Hi", "!"]); // Output: "Hi, I am Bob!"
+```
+
+---
+
+### **3. `bind`**
+El método `bind` no ejecuta la función inmediatamente. En su lugar, devuelve una nueva función con un valor fijo de `this`.
+
+```javascript
+function greet(greeting) {
+    console.log(`${greeting}, I am ${this.name}`);
+}
+
+const person = { name: "Charlie" };
+
+const boundGreet = greet.bind(person);
+boundGreet("Hey"); // Output: "Hey, I am Charlie"
+```
+
+---
+
+### **Tabla Comparativa**
+
+| Método  | ¿Qué hace?                                                                 | ¿Cuándo se ejecuta?         | ¿Cómo se pasan los argumentos? |
+|---------|----------------------------------------------------------------------------|-----------------------------|---------------------------------|
+| `call`  | Invoca la función con un valor específico de `this`.                       | Inmediatamente.             | Como argumentos individuales.  |
+| `apply` | Invoca la función con un valor específico de `this`.                       | Inmediatamente.             | Como un array o similar.       |
+| `bind`  | Crea una nueva función con un valor fijo de `this` (no la ejecuta).        | Cuando se llama la nueva función. | Como argumentos individuales.  |
+
+---
+
+Estos métodos son útiles para controlar el contexto de `this`, especialmente en funciones reutilizables o en programación orientada a objetos.
+
+
