@@ -1386,3 +1386,381 @@ Si no deseas que un evento se propague hacia los elementos padres, puedes usar e
 - **`event.stopPropagation()`**: Detiene la propagación del evento hacia los elementos padres.
 
 Ambos conceptos son esenciales para manejar eventos de manera eficiente en aplicaciones web dinámicas.
+
+
+---
+En JavaScript, los **spread** y **rest operators** utilizan la misma sintaxis (`...`), pero tienen propósitos diferentes dependiendo del contexto en el que se usen.
+
+---
+
+### **1. Spread Operator (`...`)**
+
+El **spread operator** se utiliza para "expandir" elementos de un array, objeto o iterable en lugares donde se esperan múltiples valores (como argumentos de una función o elementos de un array).
+
+#### **Ejemplos de Spread Operator**
+
+1. **Copiar arrays**:
+   ```javascript
+   const arr1 = [1, 2, 3];
+   const arr2 = [...arr1]; // Copia de arr1
+   console.log(arr2); // Output: [1, 2, 3]
+   ```
+
+2. **Combinar arrays**:
+   ```javascript
+   const arr1 = [1, 2];
+   const arr2 = [3, 4];
+   const combined = [...arr1, ...arr2];
+   console.log(combined); // Output: [1, 2, 3, 4]
+   ```
+
+3. **Copiar objetos**:
+   ```javascript
+   const obj1 = { a: 1, b: 2 };
+   const obj2 = { ...obj1 }; // Copia de obj1
+   console.log(obj2); // Output: { a: 1, b: 2 }
+   ```
+
+4. **Combinar objetos**:
+   ```javascript
+   const obj1 = { a: 1 };
+   const obj2 = { b: 2 };
+   const combined = { ...obj1, ...obj2 };
+   console.log(combined); // Output: { a: 1, b: 2 }
+   ```
+
+5. **Pasar argumentos a funciones**:
+   ```javascript
+   const numbers = [1, 2, 3];
+   console.log(Math.max(...numbers)); // Output: 3
+   ```
+
+---
+
+### **2. Rest Operator (`...`)**
+
+El **rest operator** se utiliza para "agrupar" múltiples elementos en un solo array o un objeto. Se usa principalmente en parámetros de funciones o en desestructuración.
+
+#### **Ejemplos de Rest Operator**
+
+1. **En funciones (parámetros variables)**:
+   ```javascript
+   function sum(...numbers) {
+       return numbers.reduce((acc, num) => acc + num, 0);
+   }
+   console.log(sum(1, 2, 3, 4)); // Output: 10
+   ```
+
+2. **Desestructuración de arrays**:
+   ```javascript
+   const [first, ...rest] = [1, 2, 3, 4];
+   console.log(first); // Output: 1
+   console.log(rest);  // Output: [2, 3, 4]
+   ```
+
+3. **Desestructuración de objetos**:
+   ```javascript
+   const { a, ...rest } = { a: 1, b: 2, c: 3 };
+   console.log(a);    // Output: 1
+   console.log(rest); // Output: { b: 2, c: 3 }
+   ```
+
+---
+
+### **Diferencias entre Spread y Rest**
+
+| **Característica**       | **Spread Operator**                          | **Rest Operator**                          |
+|--------------------------|----------------------------------------------|-------------------------------------------|
+| **Propósito**            | Expande elementos de un array/objeto.        | Agrupa múltiples elementos en un array/objeto. |
+| **Uso principal**        | Copiar, combinar o pasar valores.            | Agrupar parámetros o desestructurar.       |
+| **Contexto**             | Arrays, objetos, argumentos de funciones.    | Parámetros de funciones, desestructuración. |
+
+---
+
+### **Ejemplo combinado de Spread y Rest**
+
+```javascript
+function greet(first, ...others) {
+    console.log(`Hello, ${first}!`);
+    console.log(`Others: ${others.join(", ")}`);
+}
+
+const names = ["Alice", "Bob", "Charlie"];
+greet(...names); // Spread para expandir el array
+// Output:
+// Hello, Alice!
+// Others: Bob, Charlie
+```
+
+En este ejemplo:
+- El **spread operator** expande el array `names` en argumentos individuales.
+- El **rest operator** agrupa los argumentos restantes en el array `others`.
+
+---
+
+### **Resumen**
+
+- **Spread (`...`)**: Expande elementos de arrays/objetos.
+- **Rest (`...`)**: Agrupa múltiples elementos en arrays/objetos.
+
+Ambos operadores son esenciales para trabajar con datos de manera flexible y eficiente en JavaScript.
+
+---
+
+### **¿Qué es JSON?**
+
+**JSON** (JavaScript Object Notation) es un formato ligero de intercambio de datos. Es fácil de leer y escribir para los humanos, y fácil de interpretar y generar para las máquinas. JSON se utiliza comúnmente para enviar y recibir datos entre un cliente y un servidor.
+
+#### **Ejemplo de JSON**
+```json
+{
+    "name": "Alice",
+    "age": 25,
+    "isStudent": false,
+    "skills": ["JavaScript", "HTML", "CSS"]
+}
+```
+
+---
+
+### **`JSON.stringify`**
+
+El método **`JSON.stringify`** convierte un objeto o valor de JavaScript en una cadena JSON. Es útil para enviar datos a un servidor o almacenarlos en un formato legible.
+
+#### **Ejemplo de `JSON.stringify`**
+```javascript
+const user = {
+    name: "Alice",
+    age: 25,
+    isStudent: false,
+    skills: ["JavaScript", "HTML", "CSS"]
+};
+
+// Convertir el objeto a una cadena JSON
+const jsonString = JSON.stringify(user);
+console.log(jsonString);
+// Output: {"name":"Alice","age":25,"isStudent":false,"skills":["JavaScript","HTML","CSS"]}
+```
+
+---
+
+### **`JSON.parse`**
+
+El método **`JSON.parse`** convierte una cadena JSON en un objeto de JavaScript. Es útil para recibir datos de un servidor y convertirlos en un formato que puedas manipular.
+
+#### **Ejemplo de `JSON.parse`**
+```javascript
+const jsonString = '{"name":"Alice","age":25,"isStudent":false,"skills":["JavaScript","HTML","CSS"]}';
+
+// Convertir la cadena JSON a un objeto
+const user = JSON.parse(jsonString);
+console.log(user.name); // Output: Alice
+console.log(user.skills); // Output: ["JavaScript", "HTML", "CSS"]
+```
+
+---
+
+### **Otros métodos relacionados con JSON**
+
+1. **Espaciado en `JSON.stringify`**:
+   Puedes agregar un espaciado para que la salida sea más legible.
+   ```javascript
+   const user = { name: "Alice", age: 25 };
+   const prettyJson = JSON.stringify(user, null, 2);
+   console.log(prettyJson);
+   // Output:
+   // {
+   //   "name": "Alice",
+   //   "age": 25
+   // }
+   ```
+
+2. **Reemplazo con `JSON.stringify`**:
+   Puedes usar un segundo argumento para filtrar o transformar las propiedades.
+   ```javascript
+   const user = { name: "Alice", age: 25, password: "12345" };
+
+   // Excluir la propiedad "password"
+   const filteredJson = JSON.stringify(user, ["name", "age"]);
+   console.log(filteredJson); // Output: {"name":"Alice","age":25}
+   ```
+
+3. **Manejo de errores con `JSON.parse`**:
+   Si intentas analizar una cadena JSON malformada, se lanzará un error.
+   ```javascript
+   try {
+       const invalidJson = '{"name": "Alice", "age": 25'; // Falta un cierre
+       const user = JSON.parse(invalidJson);
+   } catch (error) {
+       console.error("Error al analizar JSON:", error.message);
+   }
+   ```
+
+---
+
+### **Diferencias clave entre JSON y objetos de JavaScript**
+
+| **Característica**       | **JSON**                                      | **Objeto de JavaScript**                     |
+|--------------------------|-----------------------------------------------|---------------------------------------------|
+| **Formato**              | Cadena de texto (string).                    | Estructura de datos en memoria.             |
+| **Claves**               | Siempre deben estar entre comillas dobles.   | No necesitan comillas.                      |
+| **Tipos de datos**       | Solo admite tipos básicos (`string`, `number`, `boolean`, `array`, `object`, `null`). | Admite funciones, `undefined`, y más.       |
+
+---
+
+### **Resumen**
+
+| Método           | Descripción                                                                 |
+|------------------|-----------------------------------------------------------------------------|
+| `JSON.stringify` | Convierte un objeto de JavaScript en una cadena JSON.                      |
+| `JSON.parse`     | Convierte una cadena JSON en un objeto de JavaScript.                      |
+
+JSON es una herramienta esencial para trabajar con datos en aplicaciones web, especialmente en la comunicación entre cliente y servidor.
+
+
+---
+### **Memory Management en JavaScript**
+
+El **memory management** (gestión de memoria) se refiere al proceso de asignar, usar y liberar memoria en un programa. En JavaScript, este proceso es automático gracias al **Garbage Collector**, pero entender cómo funciona es importante para evitar problemas como **memory leaks** (fugas de memoria).
+
+---
+
+### **1. ¿Qué es el Garbage Collection?**
+
+El **Garbage Collector (GC)** es un mecanismo que automáticamente libera memoria que ya no se está utilizando. En JavaScript, el GC identifica los objetos que ya no tienen referencias activas y los elimina para liberar espacio en la memoria.
+
+#### **¿Cómo funciona?**
+- **Alcance de las referencias**: Si un objeto no puede ser alcanzado desde el código (es decir, no tiene referencias activas), se considera "inaccesible" y el GC lo elimina.
+- **Algoritmo de Mark-and-Sweep**: Este es el algoritmo más común en JavaScript:
+  1. Marca todos los objetos accesibles desde el **root** (como `window` o `global`).
+  2. Los objetos no marcados se consideran inaccesibles y se eliminan.
+
+---
+
+### **2. ¿Qué es una Fuga de Memoria (Memory Leak)?**
+
+Una **fuga de memoria** ocurre cuando la memoria que ya no se necesita no es liberada, lo que puede causar que el programa consuma más memoria de la necesaria y eventualmente se ralentice o falle.
+
+#### **Causas comunes de Memory Leaks**
+1. **Referencias no eliminadas**:
+   - Si un objeto sigue teniendo referencias, no será eliminado por el GC.
+   ```javascript
+   let obj = {};
+   const ref = obj; // Referencia activa
+   obj = null; // Pero `ref` sigue apuntando al objeto
+   ```
+
+2. **Closures mal manejados**:
+   - Los closures pueden mantener referencias a variables que ya no se necesitan.
+   ```javascript
+   function createClosure() {
+       let largeArray = new Array(1000000); // Gran cantidad de memoria
+       return function () {
+           console.log(largeArray.length);
+       };
+   }
+   const closure = createClosure(); // `largeArray` nunca se libera
+   ```
+
+3. **Listeners no eliminados**:
+   - Los eventos que no se eliminan pueden mantener referencias innecesarias.
+   ```javascript
+   const button = document.getElementById("myButton");
+   function handleClick() {
+       console.log("Clicked!");
+   }
+   button.addEventListener("click", handleClick);
+   // Si el botón se elimina del DOM, el listener sigue ocupando memoria
+   ```
+
+4. **Objetos globales**:
+   - Las variables globales permanecen en memoria mientras la aplicación esté activa.
+   ```javascript
+   window.largeData = new Array(1000000); // Nunca se libera automáticamente
+   ```
+
+---
+
+### **3. Memoria Viva y Muerta**
+
+- **Memoria Viva**: Es la memoria que está siendo utilizada activamente por el programa. Por ejemplo, objetos que tienen referencias activas.
+- **Memoria Muerta**: Es la memoria que ya no se necesita, pero que aún no ha sido liberada por el Garbage Collector.
+
+---
+
+### **4. Cómo evitar Memory Leaks**
+
+1. **Eliminar referencias innecesarias**:
+   - Asegúrate de establecer las referencias a `null` cuando ya no sean necesarias.
+   ```javascript
+   let obj = { key: "value" };
+   obj = null; // Permite que el GC lo elimine
+   ```
+
+2. **Eliminar event listeners**:
+   - Usa `removeEventListener` para eliminar listeners cuando ya no sean necesarios.
+   ```javascript
+   const button = document.getElementById("myButton");
+   function handleClick() {
+       console.log("Clicked!");
+   }
+   button.addEventListener("click", handleClick);
+
+   // Eliminar el listener
+   button.removeEventListener("click", handleClick);
+   ```
+
+3. **Evitar variables globales**:
+   - Usa `let` o `const` en lugar de declarar variables en el objeto global (`window`).
+
+4. **Usar herramientas de depuración**:
+   - Usa herramientas como el **Memory Profiler** en Chrome DevTools para identificar y solucionar fugas de memoria.
+
+---
+
+### **5. Ejemplo práctico de Memory Leak**
+
+```javascript
+function createLeak() {
+    const largeArray = new Array(1000000).fill("data");
+    document.getElementById("leakButton").addEventListener("click", () => {
+        console.log(largeArray.length);
+    });
+}
+
+// Llamar a la función crea un listener que nunca se elimina
+createLeak();
+```
+
+#### **Solución**:
+Eliminar el listener cuando ya no sea necesario:
+```javascript
+function createLeak() {
+    const largeArray = new Array(1000000).fill("data");
+    const button = document.getElementById("leakButton");
+
+    function handleClick() {
+        console.log(largeArray.length);
+    }
+
+    button.addEventListener("click", handleClick);
+
+    // Eliminar el listener después de usarlo
+    button.removeEventListener("click", handleClick);
+}
+createLeak();
+```
+
+---
+
+### **Resumen**
+
+| Concepto               | Descripción                                                                 |
+|-------------------------|-----------------------------------------------------------------------------|
+| **Memory Management**   | Proceso de asignar, usar y liberar memoria en un programa.                 |
+| **Garbage Collection**  | Mecanismo automático que elimina objetos inaccesibles para liberar memoria.|
+| **Memory Leak**         | Memoria que no se libera porque sigue teniendo referencias activas.        |
+| **Memoria Viva**        | Memoria que está siendo utilizada activamente por el programa.             |
+| **Memoria Muerta**      | Memoria que ya no se necesita pero no ha sido liberada.                    |
+
+Entender cómo funciona la gestión de memoria y el Garbage Collector es clave para escribir código eficiente y evitar problemas de rendimiento en aplicaciones JavaScript.
