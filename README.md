@@ -242,3 +242,116 @@ const juan = new Persona('Juan');
 - ✅ Define propiedades y métodos en objetos.
 
 - 📌 Reemplazada en muchos casos por class, pero sigue siendo válida.
+
+  ## localStorage
+
+**`localStorage`** es una API del navegador que permite almacenar datos de manera persistente en el cliente (es decir, en el navegador del usuario). Los datos almacenados en `localStorage` no tienen fecha de expiración y permanecen disponibles incluso después de cerrar y volver a abrir el navegador.
+
+---
+
+### Características principales:
+1. **Almacenamiento clave-valor**: Los datos se almacenan como pares clave-valor en formato de texto.
+2. **Persistencia**: Los datos permanecen almacenados hasta que se eliminen manualmente o mediante código.
+3. **Capacidad**: Generalmente, tiene un límite de 5-10 MB por dominio.
+4. **Acceso sincrónico**: Las operaciones de lectura y escritura son sincrónicas.
+5. **Solo en el navegador**: No está disponible en Node.js, ya que es una API del navegador.
+
+---
+
+### Métodos principales de `localStorage`:
+
+1. **`setItem(key, value)`**:
+   - Almacena un valor asociado a una clave.
+   ```js
+   localStorage.setItem('nombre', 'Juan');
+   ```
+
+2. **`getItem(key)`**:
+   - Recupera el valor asociado a una clave.
+   ```js
+   const nombre = localStorage.getItem('nombre');
+   console.log(nombre); // 'Juan'
+   ```
+
+3. **`removeItem(key)`**:
+   - Elimina un elemento almacenado por su clave.
+   ```js
+   localStorage.removeItem('nombre');
+   ```
+
+4. **`clear()`**:
+   - Elimina todos los datos almacenados en `localStorage`.
+   ```js
+   localStorage.clear();
+   ```
+
+5. **`length`**:
+   - Devuelve el número de elementos almacenados.
+   ```js
+   console.log(localStorage.length);
+   ```
+
+6. **`key(index)`**:
+   - Devuelve la clave en una posición específica.
+   ```js
+   const primeraClave = localStorage.key(0);
+   console.log(primeraClave);
+   ```
+
+---
+
+### Ejemplo básico:
+```js
+// Almacenar datos
+localStorage.setItem('usuario', 'Juan');
+localStorage.setItem('edad', '30');
+
+// Recuperar datos
+console.log(localStorage.getItem('usuario')); // 'Juan'
+console.log(localStorage.getItem('edad')); // '30'
+
+// Eliminar un dato
+localStorage.removeItem('edad');
+
+// Limpiar todo
+localStorage.clear();
+```
+
+---
+
+### Almacenamiento de objetos:
+Como `localStorage` solo almacena cadenas de texto, debes convertir objetos a JSON antes de almacenarlos.
+
+```js
+const usuario = { nombre: 'Juan', edad: 30 };
+
+// Almacenar un objeto
+localStorage.setItem('usuario', JSON.stringify(usuario));
+
+// Recuperar el objeto
+const usuarioRecuperado = JSON.parse(localStorage.getItem('usuario'));
+console.log(usuarioRecuperado.nombre); // 'Juan'
+```
+
+---
+
+### Diferencias entre `localStorage` y `sessionStorage`:
+| Característica       | `localStorage`                     | `sessionStorage`                  |
+|----------------------|-------------------------------------|------------------------------------|
+| **Persistencia**     | Los datos permanecen indefinidamente. | Los datos se eliminan al cerrar la pestaña. |
+| **Capacidad**        | Generalmente 5-10 MB.              | Generalmente 5-10 MB.             |
+| **Alcance**          | Compartido entre pestañas del mismo dominio. | Solo disponible en la pestaña actual. |
+
+---
+
+### Limitaciones:
+1. **Tamaño limitado**: No es adecuado para almacenar grandes cantidades de datos.
+2. **Solo texto**: No puede almacenar directamente datos binarios o complejos (aunque puedes usar JSON).
+3. **No seguro**: Los datos no están cifrados, por lo que no es recomendable almacenar información sensible.
+
+---
+
+### Resumen:
+- **`localStorage`** es una API del navegador para almacenar datos clave-valor de manera persistente.
+- Es útil para guardar configuraciones, preferencias del usuario o datos que no cambian con frecuencia.
+- Los datos permanecen disponibles incluso después de cerrar el navegador, a menos que se eliminen manualmente o mediante código.
