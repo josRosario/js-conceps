@@ -817,3 +817,243 @@ example();
 | `class`          | Sí         | No                                  | Lanza un `ReferenceError`.              |
 
 El hoisting es un concepto clave para entender cómo JavaScript ejecuta el código y cómo manejar correctamente el alcance de variables y funciones.
+
+---
+
+### **Scope y diferencias entre `var`, `let` y `const`**
+
+El **scope** (alcance) en JavaScript define dónde una variable es accesible en el código. Hay tres tipos principales de scope:
+
+1. **Global Scope**: Variables accesibles desde cualquier parte del código.
+2. **Function Scope**: Variables accesibles solo dentro de la función donde se declaran.
+3. **Block Scope**: Variables accesibles solo dentro del bloque `{}` donde se declaran.
+
+---
+
+### **Diferencias entre `var`, `let` y `const`**
+
+| Característica            | `var`                              | `let`                              | `const`                            |
+|---------------------------|-------------------------------------|-------------------------------------|-------------------------------------|
+| **Scope**                 | Function scope.                    | Block scope.                       | Block scope.                       |
+| **Re-declaración**        | Permitida en el mismo scope.       | No permitida en el mismo scope.    | No permitida en el mismo scope.    |
+| **Re-asignación**         | Permitida.                         | Permitida.                         | No permitida (es constante).       |
+| **Inicialización**        | Opcional (por defecto es `undefined`). | Opcional (por defecto es `undefined`). | Obligatoria (debe asignarse un valor). |
+| **Hoisting**              | Se eleva, pero inicializa como `undefined`. | Se eleva, pero no se puede usar antes de declararla (TDZ). | Se eleva, pero no se puede usar antes de declararla (TDZ). |
+| **Uso recomendado**       | Evitar su uso (obsoleto).          | Usar para variables que cambian.   | Usar para valores constantes.      |
+
+---
+
+### **Ejemplos**
+
+1. **Scope de `var`**:
+   ```javascript
+   function exampleVar() {
+       if (true) {
+           var x = 10; // Declarada con var
+       }
+       console.log(x); // Output: 10 (function scope)
+   }
+   exampleVar();
+   ```
+
+2. **Scope de `let`**:
+   ```javascript
+   function exampleLet() {
+       if (true) {
+           let y = 20; // Declarada con let
+       }
+       console.log(y); // ReferenceError: y is not defined (block scope)
+   }
+   exampleLet();
+   ```
+
+3. **Scope de `const`**:
+   ```javascript
+   function exampleConst() {
+       if (true) {
+           const z = 30; // Declarada con const
+       }
+       console.log(z); // ReferenceError: z is not defined (block scope)
+   }
+   exampleConst();
+   ```
+
+4. **Re-asignación y re-declaración**:
+   ```javascript
+   var a = 1;
+   var a = 2; // Permitido con var
+
+   let b = 1;
+   // let b = 2; // Error: no se puede re-declarar con let
+
+   const c = 1;
+   // c = 2; // Error: no se puede re-asignar con const
+   ```
+
+---
+
+### **Resumen**
+
+- Usa `let` para variables que cambian de valor.
+- Usa `const` para valores constantes o que no cambian.
+- Evita `var` debido a su comportamiento impredecible con el scope y el hoisting.
+
+  ### **Prototype y Prototype Chain en JavaScript**
+
+En JavaScript, **`prototype`** y la **prototype chain** son conceptos fundamentales del modelo de herencia basado en prototipos. Aquí te explico ambos conceptos en detalle:
+
+---
+
+### **1. ¿Qué es el `prototype`?**
+
+El **`prototype`** es un objeto especial que existe en todas las funciones constructoras y objetos en JavaScript. Permite compartir propiedades y métodos entre instancias de un objeto.
+
+- Cada función en JavaScript tiene una propiedad llamada `prototype`.
+- Los objetos creados a partir de una función constructora heredan las propiedades y métodos definidos en el `prototype` de esa función.
+
+#### **Ejemplo básico del `prototype`**
+```javascript
+function Person(name) {
+    this.name = name;
+}
+
+// Agregamos un método al prototype
+Person.prototype.greet = function () {
+    console.log(`Hello, my name is ${this.name}`);
+};
+
+// Creamos instancias
+const alice = new Person("Alice");
+const bob = new Person("Bob");
+
+alice.greet(); // Output: Hello, my name is Alice
+bob.greet();   // Output: Hello, my name is Bob
+```
+
+En este ejemplo:
+- `greet` está definido en `Person.prototype`.
+- Tanto `alice` como `bob` tienen acceso al método `greet` porque heredan del `prototype` de `Person`.
+
+---
+
+### **2. ¿Qué es la Prototype Chain?**
+
+La **prototype chain** (cadena de prototipos) es el mecanismo mediante el cual JavaScript resuelve las propiedades y métodos de un objeto. Si una propiedad o método no se encuentra en el objeto, JavaScript busca en su prototipo, y así sucesivamente, hasta llegar al final de la cadena (el prototipo base, que es `null`).
+
+#### **Ejemplo de la Prototype Chain**
+```javascript
+function Animal(type) {
+    this.type = type;
+}
+
+Animal.prototype.eat = function () {
+    console.log(`${this.type} is eating`);
+};
+
+const dog = new Animal("Dog");
+
+// Acceso directo a la propiedad
+console.log(dog.type); // Output: Dog
+
+// Acceso a un método en el prototype
+dog.eat(); // Output: Dog is eating
+
+// Ver la cadena de prototipos
+console.log(dog.__proto__ === Animal.prototype); // true
+console.log(Animal.prototype.__proto__ === Object.prototype); // true
+console.log(Object.prototype.__proto__); // null
+```
+
+En este ejemplo:
+1. `dog` no tiene el método `eat` directamente, pero lo encuentra en `Animal.prototype`.
+2. Si no se encuentra en `Animal.prototype`, JavaScript buscaría en `Object.prototype`.
+3. La cadena termina en `null`.
+
+---
+
+### **3. Propiedades importantes del Prototype**
+
+1. **`__proto__`**:
+   - Es una referencia al prototipo del objeto.
+   - Se usa para acceder a la cadena de prototipos.
+   ```javascript
+   console.log(dog.__proto__ === Animal.prototype); // true
+   ```
+
+2. **`constructor`**:
+   - Es una propiedad del `prototype` que apunta a la función constructora.
+   ```javascript
+   console.log(dog.constructor === Animal); // true
+   ```
+
+3. **Herencia con prototipos**:
+   - Puedes extender prototipos para crear jerarquías de objetos.
+   ```javascript
+   function Mammal(type) {
+       Animal.call(this, type); // Llamamos al constructor de Animal
+   }
+
+   Mammal.prototype = Object.create(Animal.prototype); // Heredamos de Animal
+   Mammal.prototype.constructor = Mammal;
+
+   const cat = new Mammal("Cat");
+   cat.eat(); // Output: Cat is eating
+   ```
+
+---
+
+### **4. Ventajas del Prototype y Prototype Chain**
+
+- **Reutilización de código**: Los métodos definidos en el `prototype` se comparten entre todas las instancias, lo que ahorra memoria.
+- **Herencia**: Permite crear jerarquías de objetos y extender funcionalidades.
+
+---
+
+### **5. Ejemplo avanzado: Prototype Chain en acción**
+
+```javascript
+function Vehicle(type) {
+    this.type = type;
+}
+
+Vehicle.prototype.start = function () {
+    console.log(`${this.type} is starting`);
+};
+
+function Car(type, brand) {
+    Vehicle.call(this, type); // Llamamos al constructor de Vehicle
+    this.brand = brand;
+}
+
+// Heredamos de Vehicle
+Car.prototype = Object.create(Vehicle.prototype);
+Car.prototype.constructor = Car;
+
+// Agregamos un método específico para Car
+Car.prototype.drive = function () {
+    console.log(`${this.brand} is driving`);
+};
+
+// Instancia de Car
+const tesla = new Car("Electric Car", "Tesla");
+
+tesla.start(); // Output: Electric Car is starting (heredado de Vehicle)
+tesla.drive(); // Output: Tesla is driving (definido en Car)
+```
+
+En este ejemplo:
+1. `Car` hereda de `Vehicle` mediante `Object.create`.
+2. `tesla` tiene acceso tanto a los métodos de `Vehicle` como a los de `Car`.
+
+---
+
+### **Resumen**
+
+| Concepto               | Descripción                                                                 |
+|-------------------------|-----------------------------------------------------------------------------|
+| **`prototype`**         | Objeto asociado a funciones constructoras para compartir métodos/propiedades. |
+| **`__proto__`**         | Referencia al prototipo del objeto.                                         |
+| **Prototype Chain**     | Mecanismo de búsqueda de propiedades/métodos en la cadena de prototipos.    |
+| **Herencia**            | Se logra extendiendo prototipos mediante `Object.create` o clases modernas. |
+
+El **prototype** y la **prototype chain** son esenciales para entender cómo funciona la herencia y la reutilización de código en JavaScript.
