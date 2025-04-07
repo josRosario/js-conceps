@@ -728,3 +728,92 @@ saludoAna(); // Hola, Ana
 - Pueden consumir más memoria si no se manejan correctamente, ya que las variables referenciadas no se liberan hasta que el closure deja de usarse.
 
 En resumen, los closures son una herramienta poderosa para manejar el alcance y la persistencia de datos en JavaScript. Se deben usar cuando se necesite encapsulación, modularidad o persistencia de datos en funciones.
+
+---
+## hoisting
+
+El **hoisting** en JavaScript es un comportamiento por el cual las declaraciones de variables, funciones y clases se "mueven" (o parecen moverse) al inicio de su contexto de ejecución (scope) durante la fase de compilación. Esto significa que puedes usar variables o funciones antes de declararlas en el código, aunque el comportamiento depende del tipo de declaración.
+
+---
+
+### **Cómo funciona el hoisting**
+
+1. **Declaraciones de funciones**: Las funciones declaradas se "elevan" completamente, lo que significa que puedes llamarlas antes de declararlas.
+
+   ```javascript
+   sayHello(); // Output: "Hello!"
+
+   function sayHello() {
+       console.log("Hello!");
+   }
+   ```
+
+2. **Declaraciones de variables (`var`)**: Solo la declaración se eleva, pero no su inicialización. Si intentas acceder a la variable antes de inicializarla, obtendrás `undefined`.
+
+   ```javascript
+   console.log(x); // Output: undefined
+   var x = 5;
+   console.log(x); // Output: 5
+   ```
+
+3. **Declaraciones con `let` y `const`**: Estas también se elevan, pero quedan en un "Temporal Dead Zone" (TDZ) hasta que se inicializan. Si intentas acceder a ellas antes de la declaración, obtendrás un error.
+
+   ```javascript
+   console.log(y); // ReferenceError: Cannot access 'y' before initialization
+   let y = 10;
+
+   console.log(z); // ReferenceError: Cannot access 'z' before initialization
+   const z = 20;
+   ```
+
+4. **Clases**: Las clases también se elevan, pero no puedes usarlas antes de declararlas debido al TDZ.
+
+   ```javascript
+   const obj = new MyClass(); // ReferenceError: Cannot access 'MyClass' before initialization
+   class MyClass {
+       constructor() {
+           this.name = "Example";
+       }
+   }
+   ```
+
+---
+
+### **Ejemplo práctico del hoisting**
+
+```javascript
+function example() {
+    console.log(a); // Output: undefined (declaración elevada, pero no inicialización)
+    var a = 10;
+
+    console.log(b); // ReferenceError: Cannot access 'b' before initialization
+    let b = 20;
+
+    console.log(c); // ReferenceError: Cannot access 'c' before initialization
+    const c = 30;
+}
+
+example();
+```
+
+---
+
+### **Reglas importantes sobre el hoisting**
+
+1. **Funciones declaradas**: Se elevan completamente, incluyendo su cuerpo.
+2. **`var`**: Solo la declaración se eleva, no la inicialización.
+3. **`let` y `const`**: Se elevan, pero no se pueden usar antes de su declaración debido al TDZ.
+4. **Clases**: Se elevan, pero no se pueden usar antes de declararlas.
+
+---
+
+### **Resumen**
+
+| Tipo            | ¿Se eleva? | ¿Se puede usar antes de declararla? | Comportamiento antes de inicialización |
+|------------------|------------|-------------------------------------|-----------------------------------------|
+| `function`       | Sí         | Sí                                  | Funciona normalmente.                   |
+| `var`            | Sí         | Sí                                  | Devuelve `undefined`.                   |
+| `let` / `const`  | Sí         | No                                  | Lanza un `ReferenceError`.              |
+| `class`          | Sí         | No                                  | Lanza un `ReferenceError`.              |
+
+El hoisting es un concepto clave para entender cómo JavaScript ejecuta el código y cómo manejar correctamente el alcance de variables y funciones.
