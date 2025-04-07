@@ -691,3 +691,40 @@ En JavaScript, los tipos de datos se dividen en **primitivos** y **complejos**. 
 
 Estos tipos de datos son fundamentales para trabajar con JavaScript.
 
+
+---
+## closure
+🧠 **`¿Qué es un closure en JavaScript?`**
+Un closure (o clausura) es cuando una función "recuerda" el lugar donde fue creada, y puede seguir accediendo a las variables de ese lugar, incluso si esa función se ejecuta fuera de ese contexto.
+
+
+```js
+function saludar(nombre) {
+  return function() {
+    console.log(`Hola, ${nombre}`);
+  }
+}
+
+const saludoAna = saludar("Ana");
+
+saludoAna(); // Hola, Ana
+
+```
+
+**`¿Qué pasó aquí?`**
+- saludar("Ana") crea una función interna que usa la variable nombre.
+
+- Aunque saludar ya terminó de ejecutarse, la función interna recuerda el valor de nombre gracias al closure.
+
+- Así que cuando llamas saludoAna(), sigue teniendo acceso a nombre.
+
+  
+### **Ventajas**
+- Permiten mantener datos privados.
+- Facilitan la reutilización de código.
+- Son esenciales para patrones como el módulo o la programación funcional.
+
+### **Desventajas**
+- Pueden consumir más memoria si no se manejan correctamente, ya que las variables referenciadas no se liberan hasta que el closure deja de usarse.
+
+En resumen, los closures son una herramienta poderosa para manejar el alcance y la persistencia de datos en JavaScript. Se deben usar cuando se necesite encapsulación, modularidad o persistencia de datos en funciones.
