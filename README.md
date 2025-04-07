@@ -601,3 +601,93 @@ boundGreet("Hey"); // Output: "Hey, I am Charlie"
 Estos métodos son útiles para controlar el contexto de `this`, especialmente en funciones reutilizables o en programación orientada a objetos.
 
 
+En JavaScript, los tipos de datos se dividen en **primitivos** y **complejos**. Aquí tienes una lista con ejemplos:
+
+---
+
+### **Tipos de datos primitivos**
+1. **`String`**: Representa texto.
+   ```javascript
+   let name = "Alice";
+   console.log(typeof name); // "string"
+   ```
+
+2. **`Number`**: Representa números (enteros o decimales).
+   ```javascript
+   let age = 25;
+   let pi = 3.14;
+   console.log(typeof age); // "number"
+   ```
+
+3. **`BigInt`**: Representa números enteros muy grandes.
+   ```javascript
+   let bigNumber = 123456789012345678901234567890n;
+   console.log(typeof bigNumber); // "bigint"
+   ```
+
+4. **`Boolean`**: Representa valores lógicos (`true` o `false`).
+   ```javascript
+   let isActive = true;
+   console.log(typeof isActive); // "boolean"
+   ```
+
+5. **`Undefined`**: Representa una variable declarada pero no inicializada.
+   ```javascript
+   let x;
+   console.log(typeof x); // "undefined"
+   ```
+
+6. **`Null`**: Representa la ausencia intencional de un valor.
+   ```javascript
+   let y = null;
+   console.log(typeof y); // "object" (es un error histórico en JS)
+   ```
+
+7. **`Symbol`**: Representa un valor único e inmutable.
+   ```javascript
+   let uniqueId = Symbol("id");
+   console.log(typeof uniqueId); // "symbol"
+   ```
+
+---
+
+### **Tipos de datos complejos**
+1. **`Object`**: Representa una colección de pares clave-valor.
+   ```javascript
+   let person = { name: "Alice", age: 25 };
+   console.log(typeof person); // "object"
+   ```
+
+2. **`Array`**: Es un tipo especial de objeto para almacenar listas ordenadas.
+   ```javascript
+   let numbers = [1, 2, 3];
+   console.log(typeof numbers); // "object"
+   ```
+
+3. **`Function`**: Es un objeto invocable.
+   ```javascript
+   function greet() {
+       console.log("Hello!");
+   }
+   console.log(typeof greet); // "function"
+   ```
+
+---
+
+### **Tabla Resumen**
+
+| Tipo de dato   | Ejemplo                          | Resultado de `typeof` |
+|----------------|----------------------------------|------------------------|
+| `String`       | `"Hello"`                       | `"string"`            |
+| `Number`       | `42`, `3.14`                    | `"number"`            |
+| `BigInt`       | `12345678901234567890n`         | `"bigint"`            |
+| `Boolean`      | `true`, `false`                 | `"boolean"`           |
+| `Undefined`    | `let x;`                        | `"undefined"`         |
+| `Null`         | `let y = null;`                 | `"object"` (error histórico) |
+| `Symbol`       | `Symbol("id")`                  | `"symbol"`            |
+| `Object`       | `{ name: "Alice", age: 25 }`    | `"object"`            |
+| `Array`        | `[1, 2, 3]`                     | `"object"`            |
+| `Function`     | `function() {}`                 | `"function"`          |
+
+Estos tipos de datos son fundamentales para trabajar con JavaScript.
+
