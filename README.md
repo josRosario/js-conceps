@@ -355,3 +355,183 @@ console.log(usuarioRecuperado.nombre); // 'Juan'
 - **`localStorage`** es una API del navegador para almacenar datos clave-valor de manera persistente.
 - Es útil para guardar configuraciones, preferencias del usuario o datos que no cambian con frecuencia.
 - Los datos permanecen disponibles incluso después de cerrar el navegador, a menos que se eliminen manualmente o mediante código.
+
+---
+## this
+En **JavaScript**, **`this`** es una palabra clave especial que hace referencia al **contexto de ejecución** en el que se encuentra el código. El valor de `this` depende de **cómo** y **dónde** se llama una función o método.
+
+---
+
+### Conceptos básicos de `this`:
+
+1. **`this` en el contexto global**:
+   - En el navegador, `this` en el contexto global hace referencia al objeto global `window`.
+   - En Node.js, hace referencia al objeto global `global`.
+
+   **Ejemplo:**
+   ```javascript
+   console.log(this); // En el navegador: window, en Node.js: global
+   ```
+
+---
+
+2. **`this` dentro de un objeto**:
+   - Cuando `this` se usa dentro de un método de un objeto, hace referencia al **objeto que contiene el método**.
+
+   **Ejemplo:**
+   ```javascript
+   const persona = {
+     nombre: "Juan",
+     saludar: function () {
+       console.log(`Hola, soy ${this.nombre}`);
+     },
+   };
+
+   persona.saludar(); // Hola, soy Juan
+   ```
+
+   Aquí, `this.nombre` hace referencia a la propiedad `nombre` del objeto `persona`.
+
+---
+
+3. **`this` en una función normal**:
+   - En una función normal, el valor de `this` depende de **cómo se llama la función**:
+     - Si se llama en el contexto global, `this` será el objeto global (`window` en el navegador o `global` en Node.js).
+     - Si se llama como un método de un objeto, `this` será el objeto que contiene la función.
+
+   **Ejemplo:**
+   ```javascript
+   function mostrarThis() {
+     console.log(this);
+   }
+
+   mostrarThis(); // En el navegador: window, en Node.js: global
+
+   const obj = {
+     metodo: mostrarThis,
+   };
+
+   obj.metodo(); // { metodo: [Function: mostrarThis] }
+   ```
+
+---
+
+4. **`this` en una función flecha**:
+   - Las funciones flecha **no tienen su propio `this`**. En su lugar, heredan el valor de `this` del contexto en el que fueron definidas.
+
+   **Ejemplo:**
+   ```javascript
+   const persona = {
+     nombre: "Ana",
+     saludar: () => {
+       console.log(`Hola, soy ${this.nombre}`);
+     },
+   };
+
+   persona.saludar(); // Hola, soy undefined
+   ```
+
+   Aquí, `this` no hace referencia al objeto `persona`, sino al contexto global, porque las funciones flecha no tienen su propio `this`.
+
+---
+
+5. **`this` en una clase**:
+   - En una clase, `this` hace referencia a la instancia de la clase.
+
+   **Ejemplo:**
+   ```javascript
+   class Persona {
+     constructor(nombre) {
+       this.nombre = nombre;
+     }
+
+     saludar() {
+       console.log(`Hola, soy ${this.nombre}`);
+     }
+   }
+
+   const juan = new Persona("Juan");
+   juan.saludar(); // Hola, soy Juan
+   ```
+
+---
+
+6. **`this` con `call`, `apply` y `bind`**:
+   - Puedes cambiar el valor de `this` manualmente usando los métodos `call`, `apply` o `bind`.
+
+   **Ejemplo con `call`:**
+   ```javascript
+   function saludar() {
+     console.log(`Hola, soy ${this.nombre}`);
+   }
+
+   const persona = { nombre: "Carlos" };
+
+   saludar.call(persona); // Hola, soy Carlos
+   ```
+
+   **Ejemplo con `bind`:**
+   ```javascript
+   const saludarCarlos = saludar.bind(persona);
+   saludarCarlos(); // Hola, soy Carlos
+   ```
+
+---
+
+### Resumen con ejemplos simples:
+
+1. **Global:**
+   ```javascript
+   console.log(this); // window (en el navegador)
+   ```
+
+2. **En un objeto:**
+   ```javascript
+   const obj = {
+     nombre: "Pedro",
+     mostrar: function () {
+       console.log(this.nombre);
+     },
+   };
+
+   obj.mostrar(); // Pedro
+   ```
+
+3. **En una función normal:**
+   ```javascript
+   function prueba() {
+     console.log(this);
+   }
+
+   prueba(); // window (en el navegador)
+   ```
+
+4. **En una función flecha:**
+   ```javascript
+   const flecha = () => {
+     console.log(this);
+   };
+
+   flecha(); // window (en el navegador)
+   ```
+
+5. **En una clase:**
+   ```javascript
+   class Animal {
+     constructor(nombre) {
+       this.nombre = nombre;
+     }
+
+     hablar() {
+       console.log(this.nombre);
+     }
+   }
+
+   const perro = new Animal("Firulais");
+   perro.hablar(); // Firulais
+   ```
+
+---
+
+### Nota clave:
+El valor de `this` **depende del contexto de ejecución**, y puede cambiar dependiendo de cómo se llame la función o método. Si tienes dudas, puedes usar `console.log(this)` para inspeccionar su valor en diferentes contextos.
