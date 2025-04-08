@@ -1764,3 +1764,187 @@ createLeak();
 | **Memoria Muerta**      | Memoria que ya no se necesita pero no ha sido liberada.                    |
 
 Entender cómo funciona la gestión de memoria y el Garbage Collector es clave para escribir código eficiente y evitar problemas de rendimiento en aplicaciones JavaScript.
+
+---
+En JavaScript, los bucles son estructuras que permiten ejecutar un bloque de código varias veces, dependiendo de una condición. Son útiles cuando necesitas realizar tareas repetitivas, como iterar sobre elementos de un array o realizar cálculos repetidos.
+
+---
+
+### **Tipos de bucles en JavaScript**
+
+#### **1. `for`**
+El bucle `for` se usa cuando conoces de antemano cuántas veces necesitas iterar.
+
+**Sintaxis**:
+```javascript
+for (inicialización; condición; incremento) {
+    // Código a ejecutar en cada iteración
+}
+```
+
+**Ejemplo**:
+```javascript
+// Imprimir números del 1 al 5
+for (let i = 1; i <= 5; i++) {
+    console.log(i);
+}
+```
+
+**Cuándo usarlo**:
+- Cuando sabes cuántas iteraciones necesitas.
+- Para recorrer arrays o realizar tareas repetitivas con un contador.
+
+---
+
+#### **2. `while`**
+El bucle `while` se usa cuando no sabes cuántas iteraciones necesitas, pero tienes una condición que debe cumplirse para continuar.
+
+**Sintaxis**:
+```javascript
+while (condición) {
+    // Código a ejecutar mientras la condición sea verdadera
+}
+```
+
+**Ejemplo**:
+```javascript
+// Imprimir números del 1 al 5
+let i = 1;
+while (i <= 5) {
+    console.log(i);
+    i++;
+}
+```
+
+**Cuándo usarlo**:
+- Cuando no sabes cuántas iteraciones necesitas.
+- Cuando la condición depende de algo externo que puede cambiar durante la ejecución.
+
+---
+
+#### **3. `do...while`**
+El bucle `do...while` es similar a `while`, pero garantiza que el bloque de código se ejecute al menos una vez, incluso si la condición es falsa desde el principio.
+
+**Sintaxis**:
+```javascript
+do {
+    // Código a ejecutar
+} while (condición);
+```
+
+**Ejemplo**:
+```javascript
+// Imprimir números del 1 al 5
+let i = 1;
+do {
+    console.log(i);
+    i++;
+} while (i <= 5);
+```
+
+**Cuándo usarlo**:
+- Cuando necesitas ejecutar el bloque de código al menos una vez antes de verificar la condición.
+
+---
+
+#### **4. `for...of`**
+El bucle `for...of` se usa para iterar sobre elementos de objetos iterables, como arrays, cadenas de texto, mapas, y conjuntos.
+
+**Sintaxis**:
+```javascript
+for (const elemento of iterable) {
+    // Código a ejecutar para cada elemento
+}
+```
+
+**Ejemplo**:
+```javascript
+// Recorrer un array
+const frutas = ['manzana', 'banana', 'naranja'];
+for (const fruta of frutas) {
+    console.log(fruta);
+}
+```
+
+**Cuándo usarlo**:
+- Para recorrer elementos de un array o cualquier objeto iterable.
+- Cuando no necesitas el índice del elemento.
+
+---
+
+#### **5. `for...in`**
+El bucle `for...in` se usa para iterar sobre las propiedades enumerables de un objeto.
+
+**Sintaxis**:
+```javascript
+for (const propiedad in objeto) {
+    // Código a ejecutar para cada propiedad
+}
+```
+
+**Ejemplo**:
+```javascript
+// Recorrer las propiedades de un objeto
+const persona = { nombre: 'Juan', edad: 30, ciudad: 'Madrid' };
+for (const clave in persona) {
+    console.log(`${clave}: ${persona[clave]}`);
+}
+```
+
+**Cuándo usarlo**:
+- Para recorrer las propiedades de un objeto.
+- No se recomienda para arrays, ya que también puede incluir propiedades heredadas.
+
+---
+
+### **Comparación de bucles**
+
+| Bucle       | Uso principal                                                                 |
+|-------------|-------------------------------------------------------------------------------|
+| `for`       | Iteraciones con un contador conocido.                                        |
+| `while`     | Iteraciones basadas en una condición que puede cambiar dinámicamente.        |
+| `do...while`| Ejecutar el bloque al menos una vez antes de verificar la condición.         |
+| `for...of`  | Iterar sobre elementos de objetos iterables (arrays, cadenas, etc.).         |
+| `for...in`  | Iterar sobre las propiedades de un objeto.                                   |
+
+---
+
+### **Ejemplo práctico**
+Supongamos que tienes un array de números y necesitas imprimir solo los números pares.
+
+**Código**:
+```javascript
+const numeros = [1, 2, 3, 4, 5, 6];
+
+// Usando un bucle for
+for (let i = 0; i < numeros.length; i++) {
+    if (numeros[i] % 2 === 0) {
+        console.log(`Número par: ${numeros[i]}`);
+    }
+}
+
+// Usando for...of
+for (const numero of numeros) {
+    if (numero % 2 === 0) {
+        console.log(`Número par: ${numero}`);
+    }
+}
+```
+
+**Salida**:
+```plaintext
+Número par: 2
+Número par: 4
+Número par: 6
+```
+
+---
+
+### **Conclusión**
+- Usa `for` cuando necesites un contador o índice.
+- Usa `while` o `do...while` cuando la condición de iteración no sea fija.
+- Usa `for...of` para recorrer elementos de arrays o iterables.
+- Usa `for...in` para recorrer propiedades de objetos.
+
+Elige el bucle adecuado según el caso de uso para escribir código más claro y eficiente.
+
