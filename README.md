@@ -1948,3 +1948,250 @@ Número par: 6
 
 Elige el bucle adecuado según el caso de uso para escribir código más claro y eficiente.
 
+---
+El **Event Loop** en JavaScript es el mecanismo que permite que el lenguaje maneje tareas asíncronas, como temporizadores, eventos de usuario o solicitudes a servidores, mientras sigue ejecutando código sin bloquear el flujo principal.
+
+---
+
+### **Etapas del Event Loop**
+
+1. **Fase de Ejecución Inicial (Call Stack)**  
+   - El **Call Stack** (pila de llamadas) es donde se ejecuta el código sincrónico.  
+   - Cuando llamas a una función, esta se agrega al Call Stack y se ejecuta.  
+   - Si la función termina, se elimina del Call Stack.
+
+   **Ejemplo**:
+   ```javascript
+   console.log("Inicio"); // Se ejecuta directamente en el Call Stack
+   ```
+
+---
+
+2. **Cola de Tareas (Callback Queue)**  
+   - Las tareas asíncronas (como `setTimeout`) se colocan en la **Callback Queue** cuando están listas para ejecutarse.  
+   - El Event Loop mueve estas tareas al Call Stack **solo cuando el Call Stack está vacío**.
+
+   **Ejemplo**:
+   ```javascript
+   console.log("Inicio");
+
+   setTimeout(() => {
+       console.log("Tarea asíncrona");
+   }, 1000);
+
+   console.log("Fin");
+   ```
+
+   **Salida**:
+   ```
+   Inicio
+   Fin
+   Tarea asíncrona
+   ```
+
+   **Explicación**:
+   - `console.log("Inicio")` y `console.log("Fin")` se ejecutan directamente en el Call Stack.
+   - `setTimeout` coloca su callback en la Callback Queue después de 1 segundo.
+   - Cuando el Call Stack está vacío, el Event Loop mueve el callback al Call Stack para ejecutarlo.
+
+---
+
+3. **Cola de Microtareas (Microtask Queue)**  
+   - Las **Microtareas** (como `Promise.then`) tienen mayor prioridad que las tareas normales en la Callback Queue.  
+   - Antes de procesar la Callback Queue, el Event Loop procesa todas las Microtareas pendientes.
+
+   **Ejemplo**:
+   ```javascript
+   console.log("Inicio");
+
+   setTimeout(() => {
+       console.log("Tarea asíncrona");
+   }, 0);
+
+   Promise.resolve().then(() => {
+       console.log("Microtarea");
+   });
+
+   console.log("Fin");
+   ```
+
+   **Salida**:
+   ```
+   Inicio
+   Fin
+   Microtarea
+   Tarea asíncrona
+   ```
+
+   **Explicación**:
+   - `console.log("Inicio")` y `console.log("Fin")` se ejecutan directamente.
+   - La Microtarea (`Promise.then`) se procesa antes que la tarea normal (`setTimeout`), incluso si ambas están listas.
+
+---
+
+4. **Repetición del Event Loop**  
+   - El Event Loop sigue este ciclo:
+     1. Ejecuta todo el código sincrónico en el Call Stack.
+     2. Procesa todas las Microtareas en la Microtask Queue.
+     3. Mueve una tarea de la Callback Queue al Call Stack (si está vacío).
+     4. Repite.
+
+---
+
+### **Ejemplo Completo del Event Loop**
+
+```javascript
+console.log("Inicio");
+
+setTimeout(() => {
+    console.log("Tarea asíncrona 1");
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log("Microtarea 1");
+}).then(() => {
+    console.log("Microtarea 2");
+});
+
+setTimeout(() => {
+    console.log("Tarea asíncrona 2");
+}, 0);
+
+console.log("Fin");
+```
+
+**Salida**:
+```
+Inicio
+Fin
+Microtarea 1
+Microtarea 2
+Tarea asíncrona 1
+Tarea asíncrona 2
+```
+
+**Explicación**:
+1. `console.log("Inicio")` y `console.log("Fin")` se ejecutan directamente en el Call Stack.
+2. `setTimeout` coloca sus callbacks en la Callback Queue.
+3. `Promise.then` coloca sus callbacks en la Microtask Queue.
+4. El Event Loop procesa las Microtareas (`Microtarea 1`, `Microtarea 2`) antes de las tareas normales (`Tarea asíncrona 1`, `Tarea asíncrona 2`).
+
+---
+
+### **Resumen del flujo del Event Loop**
+1. Ejecuta el código sincrónico en el Call Stack.
+2. Procesa todas las Microtareas en la Microtask Queue.
+3. Procesa una tarea de la Callback Queue (si el Call Stack está vacío).
+4. Repite el ciclo.
+
+---
+
+### **Concepto clave**
+El Event Loop asegura que JavaScript pueda manejar tareas asíncronas sin bloquear el flujo principal, permitiendo que el lenguaje sea eficiente y no se detenga mientras espera respuestas o eventos.
+
+---
+Las **Microtasks** en JavaScript son tareas que tienen una prioridad más alta que las tareas normales (macrotasks) en el Event Loop. Estas tareas se ejecutan inmediatamente después de que el código sincrónico actual haya terminado y antes de que se procesen las tareas en la cola de macrotasks.
+
+---
+
+### **Características principales de las Microtasks:**
+1. **Alta prioridad**:
+   - Las Microtasks siempre se ejecutan antes que las tareas normales (macrotasks) en el Event Loop.
+   - Ejemplo de macrotasks: `setTimeout`, `setInterval`.
+
+2. **Ejemplos de Microtasks**:
+   - Promesas resueltas (`Promise.then`, `Promise.catch`, `Promise.finally`).
+   - `MutationObserver` (API para observar cambios en el DOM).
+
+3. **Cola de Microtasks**:
+   - Las Microtasks se colocan en una cola especial llamada **Microtask Queue**.
+   - Antes de que el Event Loop procese la cola de macrotasks, se asegura de vaciar completamente la cola de Microtasks.
+
+---
+
+### **Cómo funcionan las Microtasks en el Event Loop**
+1. Ejecuta el código sincrónico en el **Call Stack**.
+2. Procesa todas las Microtasks en la **Microtask Queue**.
+3. Procesa una tarea de la **Callback Queue** (macrotask).
+4. Repite el ciclo.
+
+---
+
+### **Ejemplo básico de Microtasks con Promesas**
+```javascript
+console.log("Inicio");
+
+setTimeout(() => {
+    console.log("Macrotask: setTimeout");
+}, 0);
+
+Promise.resolve().then(() => {
+    console.log("Microtask: Promise.then");
+});
+
+console.log("Fin");
+```
+
+**Salida**:
+```
+Inicio
+Fin
+Microtask: Promise.then
+Macrotask: setTimeout
+```
+
+**Explicación**:
+1. `console.log("Inicio")` y `console.log("Fin")` se ejecutan directamente en el Call Stack.
+2. La Microtask (`Promise.then`) se coloca en la Microtask Queue.
+3. La Macrotask (`setTimeout`) se coloca en la Callback Queue.
+4. El Event Loop procesa primero la Microtask antes de la Macrotask.
+
+---
+
+### **Ejemplo con múltiples Microtasks**
+```javascript
+console.log("Inicio");
+
+Promise.resolve().then(() => {
+    console.log("Microtask 1");
+    return Promise.resolve();
+}).then(() => {
+    console.log("Microtask 2");
+});
+
+console.log("Fin");
+```
+
+**Salida**:
+```
+Inicio
+Fin
+Microtask 1
+Microtask 2
+```
+
+**Explicación**:
+1. `console.log("Inicio")` y `console.log("Fin")` se ejecutan directamente.
+2. La primera Microtask (`Microtask 1`) se coloca en la Microtask Queue.
+3. Cuando se resuelve la primera Microtask, se genera otra Microtask (`Microtask 2`), que también se coloca en la Microtask Queue.
+4. El Event Loop procesa todas las Microtasks antes de continuar con otras tareas.
+
+---
+
+### **Diferencia entre Microtasks y Macrotasks**
+| **Microtasks**                     | **Macrotasks**                     |
+|------------------------------------|------------------------------------|
+| Tienen mayor prioridad.            | Se ejecutan después de las Microtasks. |
+| Ejemplos: `Promise.then`, `MutationObserver`. | Ejemplos: `setTimeout`, `setInterval`, eventos del DOM. |
+| Se procesan antes de las Macrotasks. | Se procesan después de vaciar la Microtask Queue. |
+
+---
+
+### **Cuándo usar Microtasks**
+- **Promesas**: Para manejar tareas asíncronas que deben ejecutarse inmediatamente después del código sincrónico.
+- **Optimización del DOM**: Usar `MutationObserver` para detectar y reaccionar a cambios en el DOM.
+
+---
+
+### **Conclusión**
+Las Microtasks son una parte esencial del Event Loop en JavaScript, ya que permiten manejar tareas asíncronas con alta prioridad. Entender cómo funcionan te ayudará a escribir código más eficiente y predecible.
