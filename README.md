@@ -2300,3 +2300,125 @@ El contexto de ejecución trabaja junto con el **Event Loop** para manejar tarea
 ### **Conclusión**
 
 El contexto de ejecución es fundamental para entender cómo JavaScript maneja variables, funciones y el objeto `this`. Comprenderlo es clave para escribir código eficiente y evitar errores relacionados con el alcance y el comportamiento de `this`.
+
+
+### **Entorno Léxico en JavaScript**
+
+El **entorno léxico** es una estructura que JavaScript utiliza para organizar y gestionar las variables y funciones en un programa. Cada vez que se ejecuta una función o bloque de código, se crea un nuevo entorno léxico que contiene referencias a las variables y funciones definidas dentro de ese contexto.
+
+---
+
+### **Ejemplo Visual del Entorno Léxico**
+
+```javascript
+const globalVar = "Soy global";
+
+function outer() {
+    const outerVar = "Soy de outer";
+
+    function inner() {
+        const innerVar = "Soy de inner";
+        console.log(globalVar); // Accede al entorno global
+        console.log(outerVar);  // Accede al entorno de `outer`
+        console.log(innerVar);  // Accede al entorno de `inner`
+    }
+
+    inner();
+}
+
+outer();
+```
+
+---
+
+### **Representación del Entorno Léxico como JSON**
+
+Podemos imaginar cómo JavaScript estructura los entornos léxicos en memoria utilizando un formato similar a JSON. Cada entorno léxico tiene un conjunto de variables locales y una referencia al entorno padre.
+
+```json
+{
+  "GlobalEnvironment": {
+    "variables": {
+      "globalVar": "Soy global",
+      "outer": "function"
+    },
+    "outer": null
+  },
+  "OuterEnvironment": {
+    "variables": {
+      "outerVar": "Soy de outer",
+      "inner": "function"
+    },
+    "outer": "GlobalEnvironment"
+  },
+  "InnerEnvironment": {
+    "variables": {
+      "innerVar": "Soy de inner"
+    },
+    "outer": "OuterEnvironment"
+  }
+}
+```
+
+---
+
+### **Explicación del JSON**
+
+1. **GlobalEnvironment**:
+   - Contiene las variables y funciones definidas en el ámbito global (`globalVar` y `outer`).
+   - Su referencia `outer` es `null` porque no tiene un entorno padre.
+
+2. **OuterEnvironment**:
+   - Se crea cuando se ejecuta la función `outer`.
+   - Contiene las variables locales de `outer` (`outerVar` y `inner`).
+   - Su referencia `outer` apunta al `GlobalEnvironment`.
+
+3. **InnerEnvironment**:
+   - Se crea cuando se ejecuta la función `inner`.
+   - Contiene las variables locales de `inner` (`innerVar`).
+   - Su referencia `outer` apunta al `OuterEnvironment`.
+
+---
+
+### **Cómo JavaScript Busca Variables**
+
+Cuando JavaScript necesita acceder a una variable:
+1. Busca en el entorno léxico actual.
+2. Si no la encuentra, sube al entorno padre (referencia `outer`).
+3. Continúa subiendo hasta llegar al entorno global.
+4. Si no encuentra la variable, lanza un error (`ReferenceError`).
+
+---
+
+### **Ejemplo con Scope Chain**
+
+```javascript
+const globalVar = "Soy global";
+
+function outer() {
+    const outerVar = "Soy de outer";
+
+    function inner() {
+        const innerVar = "Soy de inner";
+        console.log(globalVar); // Busca en el entorno global
+        console.log(outerVar);  // Busca en el entorno de `outer`
+        console.log(innerVar);  // Busca en el entorno de `inner`
+    }
+
+    inner();
+}
+
+outer();
+```
+
+#### **Scope Chain Visualizado**
+- Cuando `inner` intenta acceder a `globalVar`, `outerVar` e `innerVar`, JavaScript sigue esta cadena:
+  - **`innerVar`**: Encontrado en el entorno de `inner`.
+  - **`outerVar`**: No encontrado en `inner`, sube al entorno de `outer`.
+  - **`globalVar`**: No encontrado en `inner` ni en `outer`, sube al entorno global.
+
+---
+
+### **Conclusión**
+
+El entorno léxico es una estructura jerárquica que organiza las variables y funciones en JavaScript. Cada entorno tiene su propio conjunto de variables y una referencia al entorno padre, lo que permite a JavaScript buscar variables en la cadena de alcance (**scope chain**). Este concepto es fundamental para entender cómo funcionan el alcance, los closures y la ejecución del código en JavaScript.
