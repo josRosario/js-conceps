@@ -2422,3 +2422,258 @@ outer();
 ### **Conclusión**
 
 El entorno léxico es una estructura jerárquica que organiza las variables y funciones en JavaScript. Cada entorno tiene su propio conjunto de variables y una referencia al entorno padre, lo que permite a JavaScript buscar variables en la cadena de alcance (**scope chain**). Este concepto es fundamental para entender cómo funcionan el alcance, los closures y la ejecución del código en JavaScript.
+
+En JavaScript, `eval` es una función que evalúa o ejecuta un código JavaScript representado como una cadena de texto. Es una función global que puede interpretar y ejecutar código dinámico en tiempo de ejecución.
+
+---
+
+### **Sintaxis**
+
+```javascript
+eval(string);
+```
+
+- **`string`**: Una cadena de texto que contiene código JavaScript válido.
+
+---
+
+### **Ejemplo Básico**
+
+```javascript
+const x = 10;
+const y = 20;
+const result = eval("x + y"); // Ejecuta el código "x + y"
+console.log(result); // 30
+```
+
+En este ejemplo, `eval` interpreta la cadena `"x + y"` como código JavaScript y lo ejecuta en el contexto actual.
+
+---
+
+### **Usos de `eval`**
+
+1. **Ejecutar código dinámico**:
+   - `eval` puede ser útil si necesitas ejecutar código generado dinámicamente en tiempo de ejecución.
+
+   ```javascript
+   const code = "const a = 5; const b = 10; a * b;";
+   console.log(eval(code)); // 50
+   ```
+
+2. **Acceso dinámico a variables**:
+   - Puedes usar `eval` para acceder a variables cuyo nombre se genera dinámicamente.
+
+   ```javascript
+   const varName = "dynamicVar";
+   const dynamicVar = 42;
+   console.log(eval(varName)); // 42
+   ```
+
+---
+
+### **Problemas y Riesgos de `eval`**
+
+1. **Problemas de Seguridad**:
+   - `eval` puede ejecutar cualquier código, lo que lo hace vulnerable a ataques de inyección de código si se usa con entradas no confiables.
+   - **Ejemplo de riesgo**:
+     ```javascript
+     const userInput = "alert('Hacked!')";
+     eval(userInput); // Ejecuta el código malicioso
+     ```
+
+2. **Impacto en el Rendimiento**:
+   - `eval` es más lento que el código normal porque el motor de JavaScript debe interpretar y compilar el código en tiempo de ejecución.
+
+3. **Dificultad para Depurar**:
+   - El uso de `eval` puede dificultar la depuración, ya que el código generado dinámicamente no está presente en el archivo fuente.
+
+---
+
+### **Alternativas a `eval`**
+
+1. **`JSON.parse`**:
+   - Si estás procesando datos en formato JSON, usa `JSON.parse` en lugar de `eval`.
+
+   ```javascript
+   const jsonString = '{"name": "John", "age": 30}';
+   const data = JSON.parse(jsonString);
+   console.log(data.name); // "John"
+   ```
+
+2. **Funciones Constructoras**:
+   - Usa el constructor de funciones para ejecutar código dinámico de manera más controlada.
+
+   ```javascript
+   const func = new Function("a", "b", "return a + b;");
+   console.log(func(5, 10)); // 15
+   ```
+
+3. **Acceso Dinámico a Propiedades**:
+   - Usa objetos o estructuras de datos para acceder dinámicamente a valores en lugar de `eval`.
+
+   ```javascript
+   const obj = { dynamicVar: 42 };
+   const varName = "dynamicVar";
+   console.log(obj[varName]); // 42
+   ```
+
+---
+
+### **Cuándo Evitar `eval`**
+
+- **Entradas no confiables**: Nunca uses `eval` con datos proporcionados por el usuario.
+- **Código crítico**: Evita `eval` en aplicaciones donde el rendimiento y la seguridad son importantes.
+
+---
+
+### **Conclusión**
+
+`eval` es una herramienta poderosa pero peligrosa. Aunque puede ser útil en casos específicos, su uso debe evitarse siempre que sea posible debido a problemas de seguridad, rendimiento y mantenibilidad. En su lugar, utiliza alternativas más seguras y controladas para lograr el mismo objetivo.
+
+### **Concepto y Diferencias entre Session, Cookie, LocalStorage y SessionStorage**
+
+En el desarrollo web, **Session**, **Cookie**, **LocalStorage** y **SessionStorage** son mecanismos para almacenar datos en el cliente o en el servidor. Cada uno tiene características específicas que los hacen adecuados para diferentes casos de uso.
+
+---
+
+### **1. Cookie**
+
+#### **Concepto**:
+- Las cookies son pequeños fragmentos de datos almacenados en el navegador y enviados al servidor con cada solicitud HTTP.
+- Se utilizan principalmente para mantener sesiones de usuario, almacenar preferencias o realizar seguimiento entre solicitudes.
+
+#### **Características**:
+- **Almacenamiento**: Se almacenan en el navegador.
+- **Tamaño máximo**: Aproximadamente 4 KB por cookie.
+- **Duración**: Puede ser temporal (de sesión) o persistente (con fecha de expiración).
+- **Acceso**: Disponible tanto en el cliente como en el servidor.
+- **Seguridad**: Puede ser vulnerable si no se configura correctamente (`HttpOnly`, `Secure`, `SameSite`).
+
+#### **Ejemplo**:
+```javascript
+// Crear una cookie
+document.cookie = "username=JohnDoe; expires=Fri, 31 Dec 2025 23:59:59 GMT; path=/";
+
+// Leer cookies
+console.log(document.cookie); // "username=JohnDoe"
+```
+
+---
+
+### **2. Session**
+
+#### **Concepto**:
+- Una sesión es un mecanismo del lado del servidor para almacenar datos específicos del usuario mientras navega por un sitio web.
+- Se utiliza para mantener el estado del usuario (por ejemplo, autenticación) entre solicitudes HTTP.
+
+#### **Características**:
+- **Almacenamiento**: En el servidor.
+- **Duración**: Dura mientras el navegador esté abierto o hasta que el servidor la invalide.
+- **Acceso**: Solo accesible desde el servidor.
+- **Seguridad**: Más seguro que las cookies porque los datos no se almacenan en el cliente.
+
+#### **Ejemplo** (usando Node.js con Express):
+```javascript
+const session = require('express-session');
+
+app.use(session({
+  secret: 'mySecretKey',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}));
+
+app.get('/', (req, res) => {
+  req.session.username = 'JohnDoe'; // Almacenar datos en la sesión
+  res.send('Sesión iniciada');
+});
+```
+
+---
+
+### **3. LocalStorage**
+
+#### **Concepto**:
+- `LocalStorage` es una API del navegador que permite almacenar datos de manera persistente en el cliente.
+- Los datos persisten incluso después de cerrar el navegador.
+
+#### **Características**:
+- **Almacenamiento**: En el navegador.
+- **Tamaño máximo**: Aproximadamente 5-10 MB por dominio.
+- **Duración**: Persistente hasta que se elimine manualmente.
+- **Acceso**: Solo accesible desde el cliente.
+- **Seguridad**: No es seguro para datos sensibles porque es accesible desde JavaScript.
+
+#### **Ejemplo**:
+```javascript
+// Guardar datos
+localStorage.setItem('username', 'JohnDoe');
+
+// Leer datos
+console.log(localStorage.getItem('username')); // "JohnDoe"
+
+// Eliminar datos
+localStorage.removeItem('username');
+```
+
+---
+
+### **4. SessionStorage**
+
+#### **Concepto**:
+- `SessionStorage` es similar a `LocalStorage`, pero los datos solo persisten mientras la pestaña del navegador esté abierta.
+- Los datos se eliminan al cerrar la pestaña o el navegador.
+
+#### **Características**:
+- **Almacenamiento**: En el navegador.
+- **Tamaño máximo**: Aproximadamente 5 MB por dominio.
+- **Duración**: Solo durante la sesión de la pestaña.
+- **Acceso**: Solo accesible desde el cliente.
+- **Seguridad**: No es seguro para datos sensibles porque es accesible desde JavaScript.
+
+#### **Ejemplo**:
+```javascript
+// Guardar datos
+sessionStorage.setItem('username', 'JohnDoe');
+
+// Leer datos
+console.log(sessionStorage.getItem('username')); // "JohnDoe"
+
+// Eliminar datos
+sessionStorage.removeItem('username');
+```
+
+---
+
+### **Diferencias Principales**
+
+| **Característica**       | **Cookie**                     | **Session**                  | **LocalStorage**             | **SessionStorage**           |
+|--------------------------|--------------------------------|-----------------------------|------------------------------|------------------------------|
+| **Almacenamiento**       | Cliente (navegador)           | Servidor                    | Cliente (navegador)          | Cliente (navegador)          |
+| **Duración**             | Configurable (sesión o persistente) | Hasta que se cierre el navegador o se invalide | Persistente hasta que se elimine | Solo durante la sesión de la pestaña |
+| **Tamaño máximo**        | ~4 KB                         | Depende del servidor        | ~5-10 MB                     | ~5 MB                        |
+| **Acceso**               | Cliente y servidor            | Solo servidor               | Solo cliente                 | Solo cliente                 |
+| **Seguridad**            | Vulnerable si no se configura correctamente | Más seguro                  | No seguro para datos sensibles | No seguro para datos sensibles |
+| **Uso típico**           | Autenticación, preferencias   | Estado del usuario          | Almacenamiento persistente   | Almacenamiento temporal      |
+
+---
+
+### **Cuándo Usar Cada Uno**
+
+1. **Cookies**:
+   - Para almacenar datos que deben enviarse al servidor con cada solicitud (por ejemplo, tokens de sesión o preferencias de usuario).
+
+2. **Session**:
+   - Para manejar datos sensibles o mantener el estado del usuario en el servidor (por ejemplo, autenticación).
+
+3. **LocalStorage**:
+   - Para almacenar datos persistentes en el cliente que no son sensibles (por ejemplo, configuraciones de la aplicación).
+
+4. **SessionStorage**:
+   - Para almacenar datos temporales que solo son relevantes mientras la pestaña esté abierta (por ejemplo, datos de formularios).
+
+---
+
+### **Conclusión**
+
+Cada mecanismo tiene su propósito y limitaciones. La elección entre cookies, sesiones, `LocalStorage` y `SessionStorage` depende del caso de uso, la seguridad requerida y la duración de los datos que necesitas almacenar.
