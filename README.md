@@ -2195,3 +2195,108 @@ Microtask 2
 
 ### **Conclusión**
 Las Microtasks son una parte esencial del Event Loop en JavaScript, ya que permiten manejar tareas asíncronas con alta prioridad. Entender cómo funcionan te ayudará a escribir código más eficiente y predecible.
+
+El **contexto de ejecución de JavaScript** es el entorno en el que se ejecuta un fragmento de código. Define qué variables, objetos y funciones están disponibles y cómo se comportan. Cada vez que se ejecuta un código en JavaScript, se crea un nuevo contexto de ejecución.
+
+---
+
+### **Tipos de Contextos de Ejecución**
+
+1. **Contexto Global**:
+   - Es el contexto predeterminado cuando se ejecuta un script por primera vez.
+   - En un navegador, el objeto global es `window`, y en Node.js es `global`.
+   - Variables y funciones definidas fuera de cualquier función pertenecen al contexto global.
+
+   ```javascript
+   var globalVar = "Soy global";
+
+   function test() {
+       console.log(globalVar); // Accede al contexto global
+   }
+   ```
+
+2. **Contexto de Función**:
+   - Se crea cada vez que se llama a una función.
+   - Cada función tiene su propio contexto de ejecución.
+   - Las variables definidas dentro de una función no son accesibles fuera de ella (alcance local).
+
+   ```javascript
+   function test() {
+       var localVar = "Soy local";
+       console.log(localVar); // Accesible dentro de la función
+   }
+   console.log(localVar); // Error: localVar no está definido
+   ```
+
+3. **Contexto de Evaluación (`eval`)**:
+   - Se crea cuando se ejecuta código dentro de una función `eval`.
+   - No se recomienda usar `eval` debido a problemas de seguridad y rendimiento.
+
+---
+
+### **Componentes del Contexto de Ejecución**
+
+1. **Objeto de Variables (Variable Environment)**:
+   - Contiene las variables, funciones y parámetros definidos en el contexto actual.
+
+2. **Objeto `this`**:
+   - Representa el objeto desde el cual se invoca el código.
+   - Su valor depende de cómo se llama a la función:
+     - En el contexto global, `this` es el objeto global (`window` en navegadores).
+     - En un método de un objeto, `this` es el objeto que contiene el método.
+     - En funciones flecha, `this` se hereda del contexto donde se definió.
+
+   ```javascript
+   console.log(this); // En un navegador, imprime el objeto `window`
+
+   const obj = {
+       method: function() {
+           console.log(this); // Imprime `obj`
+       }
+   };
+   obj.method();
+   ```
+
+3. **Scope Chain (Cadena de Alcance)**:
+   - Define el acceso a variables y funciones desde el contexto actual hacia los contextos superiores.
+   - Si una variable no está en el contexto actual, JavaScript busca en los contextos superiores hasta llegar al global.
+
+   ```javascript
+   var globalVar = "Soy global";
+
+   function outer() {
+       var outerVar = "Soy de outer";
+
+       function inner() {
+           console.log(globalVar); // Accede al contexto global
+           console.log(outerVar); // Accede al contexto de `outer`
+       }
+       inner();
+   }
+   outer();
+   ```
+
+---
+
+### **Ciclo de Vida del Contexto de Ejecución**
+
+1. **Creación**:
+   - Se crea el contexto y se inicializan las variables, funciones y el objeto `this`.
+
+2. **Ejecución**:
+   - El código se ejecuta línea por línea dentro del contexto.
+
+3. **Destrucción**:
+   - Una vez que el código ha terminado de ejecutarse, el contexto se destruye (excepto el contexto global, que persiste durante toda la ejecución del programa).
+
+---
+
+### **Relación con el Event Loop**
+
+El contexto de ejecución trabaja junto con el **Event Loop** para manejar tareas asincrónicas. Cuando se ejecuta un código asincrónico (como `setTimeout` o `fetch`), el contexto de ejecución principal no se bloquea. En su lugar, las tareas asincrónicas se manejan en la cola de tareas y se ejecutan cuando el contexto principal está libre.
+
+---
+
+### **Conclusión**
+
+El contexto de ejecución es fundamental para entender cómo JavaScript maneja variables, funciones y el objeto `this`. Comprenderlo es clave para escribir código eficiente y evitar errores relacionados con el alcance y el comportamiento de `this`.
