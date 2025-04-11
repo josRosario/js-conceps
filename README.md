@@ -1,5 +1,154 @@
 # JavaScript: Conceptos
 
+En JavaScript, los conceptos de **funciones de primer orden** y **funciones de orden superior** están relacionados con cómo se manejan las funciones en el lenguaje. JavaScript trata a las funciones como **ciudadanos de primera clase** (*first-class citizens*), lo que significa que las funciones pueden ser asignadas a variables, pasadas como argumentos y devueltas desde otras funciones. Esto permite trabajar con funciones de manera flexible y poderosa.
+
+---
+
+### **1. Funciones de Primer Orden**
+- **Definición**: Una función de primer orden es simplemente una función que no toma otras funciones como argumentos ni devuelve funciones como resultado. Es una función "normal" que realiza una tarea específica.
+- **Ejemplo**:
+  ```javascript
+  function saludar(nombre) {
+      return `Hola, ${nombre}`;
+  }
+
+  console.log(saludar('Juan')); // "Hola, Juan"
+  ```
+
+En este caso, `saludar` es una función de primer orden porque no interactúa con otras funciones.
+
+---
+
+### **2. Funciones de Orden Superior**
+- **Definición**: Una función de orden superior es una función que:
+  1. **Recibe una función como argumento**, o
+  2. **Devuelve otra función como resultado**, o ambas.
+- **Uso**: Estas funciones son fundamentales en la programación funcional y son comunes en JavaScript, especialmente al trabajar con métodos como `map`, `filter`, `reduce`, etc.
+
+#### **Ejemplo 1: Recibir una función como argumento**
+```javascript
+function procesarTexto(texto, callback) {
+    return callback(texto);
+}
+
+function convertirMayusculas(texto) {
+    return texto.toUpperCase();
+}
+
+console.log(procesarTexto('hola', convertirMayusculas)); // "HOLA"
+```
+En este ejemplo:
+- `procesarTexto` es una función de orden superior porque recibe otra función (`callback`) como argumento.
+- `convertirMayusculas` es una función de primer orden.
+
+#### **Ejemplo 2: Devolver una función**
+```javascript
+function crearMultiplicador(multiplicador) {
+    return function (numero) {
+        return numero * multiplicador;
+    };
+}
+
+const multiplicarPorDos = crearMultiplicador(2);
+console.log(multiplicarPorDos(5)); // 10
+```
+En este ejemplo:
+- `crearMultiplicador` es una función de orden superior porque devuelve otra función.
+- La función devuelta (anónima) es una función de primer orden.
+
+---
+
+### **3. Funciones como Ciudadanos de Primera Clase**
+En JavaScript, las funciones son **ciudadanos de primera clase**, lo que significa que pueden:
+1. **Asignarse a variables**:
+   ```javascript
+   const sumar = function (a, b) {
+       return a + b;
+   };
+   console.log(sumar(2, 3)); // 5
+   ```
+
+2. **Pasarse como argumentos**:
+   ```javascript
+   function ejecutarOperacion(a, b, operacion) {
+       return operacion(a, b);
+   }
+
+   function restar(a, b) {
+       return a - b;
+   }
+
+   console.log(ejecutarOperacion(5, 3, restar)); // 2
+   ```
+
+3. **Devolverse desde otras funciones**:
+   ```javascript
+   function crearSaludo(saludo) {
+       return function (nombre) {
+           return `${saludo}, ${nombre}`;
+       };
+   }
+
+   const saludarEnIngles = crearSaludo('Hello');
+   console.log(saludarEnIngles('John')); // "Hello, John"
+   ```
+
+---
+
+### **4. Métodos de Orden Superior en JavaScript**
+JavaScript incluye varios métodos de orden superior en los objetos como `Array`. Estos métodos son funciones de orden superior porque reciben otras funciones como argumentos.
+
+#### **Ejemplo: `map`**
+```javascript
+const numeros = [1, 2, 3, 4];
+const cuadrados = numeros.map(num => num * num);
+console.log(cuadrados); // [1, 4, 9, 16]
+```
+
+#### **Ejemplo: `filter`**
+```javascript
+const numeros = [1, 2, 3, 4];
+const pares = numeros.filter(num => num % 2 === 0);
+console.log(pares); // [2, 4]
+```
+
+#### **Ejemplo: `reduce`**
+```javascript
+const numeros = [1, 2, 3, 4];
+const suma = numeros.reduce((acumulador, num) => acumulador + num, 0);
+console.log(suma); // 10
+```
+
+---
+
+### **5. Ventajas de las Funciones de Orden Superior**
+1. **Reutilización de código**:
+   - Puedes escribir funciones genéricas que acepten diferentes comportamientos a través de callbacks.
+2. **Legibilidad**:
+   - Facilitan la escritura de código más declarativo y fácil de entender.
+3. **Composición**:
+   - Permiten combinar funciones pequeñas para crear funcionalidades más complejas.
+
+---
+
+### **6. Diferencias entre Funciones de Primer Orden y de Orden Superior**
+
+| **Característica**               | **Funciones de Primer Orden**                     | **Funciones de Orden Superior**                     |
+|----------------------------------|--------------------------------------------------|----------------------------------------------------|
+| **Definición**                   | No interactúan con otras funciones.              | Reciben o devuelven otras funciones.               |
+| **Interacción con otras funciones** | No reciben ni devuelven funciones.               | Pueden recibir o devolver funciones.               |
+| **Ejemplo**                      | `function sumar(a, b) { return a + b; }`         | `array.map(num => num * 2)`                        |
+
+---
+
+### **Conclusión**
+- **Funciones de primer orden**: Son funciones "normales" que no interactúan con otras funciones.
+- **Funciones de orden superior**: Son funciones que reciben o devuelven otras funciones, y son fundamentales en la programación funcional.
+- JavaScript, al tratar las funciones como ciudadanos de primera clase, permite trabajar con ellas de manera flexible, lo que facilita la creación de código modular, reutilizable y declarativo.
+
+
+---
+
 # 📦 Promesas en JavaScript
 
 Una **promesa** en JavaScript es un objeto que representa la **eventual finalización (o falla)** de una operación **asíncrona** y su **valor resultante**.
