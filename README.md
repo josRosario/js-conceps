@@ -3,7 +3,65 @@
 En JavaScript, los conceptos de **funciones de primer orden** y **funciones de orden superior** están relacionados con cómo se manejan las funciones en el lenguaje. JavaScript trata a las funciones como **ciudadanos de primera clase** (*first-class citizens*), lo que significa que las funciones pueden ser asignadas a variables, pasadas como argumentos y devueltas desde otras funciones. Esto permite trabajar con funciones de manera flexible y poderosa.
 
 ---
+**Debounce** es una técnica utilizada en programación para limitar la frecuencia con la que se ejecuta una función. Es especialmente útil en situaciones donde una función se llama repetidamente en un corto período de tiempo, como en eventos de entrada del usuario (por ejemplo, `keyup`, `scroll`, `resize`). El debounce asegura que la función solo se ejecute después de que haya pasado un período de tiempo específico desde la última vez que se activó el evento.
 
+### Ejemplo de uso de debounce en JavaScript
+
+Aquí tienes un ejemplo básico de cómo implementar y usar debounce:
+
+```javascript
+// Implementación de debounce
+function debounce(func, delay) {
+  let timeoutId;
+  return function (...args) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(this, args);
+    }, delay);
+  };
+}
+
+// Ejemplo de uso
+const handleResize = () => {
+  console.log('Window resized:', new Date().toISOString());
+};
+
+// Aplicar debounce con un retraso de 500ms
+const debouncedResize = debounce(handleResize, 500);
+
+// Escuchar el evento de redimensionamiento de la ventana
+window.addEventListener('resize', debouncedResize);
+```
+
+### Explicación del código
+
+1. **Función `debounce`**:
+   - Recibe dos parámetros: la función que deseas ejecutar (`func`) y el tiempo de espera en milisegundos (`delay`).
+   - Usa un temporizador (`timeoutId`) para retrasar la ejecución de la función.
+   - Si el evento se dispara nuevamente antes de que el temporizador expire, se cancela el temporizador anterior con `clearTimeout`.
+
+2. **Uso práctico**:
+   - En este ejemplo, la función `handleResize` se ejecutará solo después de que hayan pasado 500ms desde la última vez que se activó el evento `resize`.
+
+### Ejemplo práctico con un campo de búsqueda
+
+```javascript
+const searchInput = document.getElementById('search');
+
+const fetchResults = (query) => {
+  console.log(`Fetching results for: ${query}`);
+};
+
+const debouncedFetchResults = debounce(fetchResults, 300);
+
+searchInput.addEventListener('input', (event) => {
+  debouncedFetchResults(event.target.value);
+});
+```
+
+En este caso, la función `fetchResults` se ejecutará solo después de que el usuario deje de escribir durante 300ms, evitando llamadas innecesarias a la API mientras el usuario escribe.
+
+---
 ### **1. Funciones de Primer Orden**
 - **Definición**: Una función de primer orden es simplemente una función que no toma otras funciones como argumentos ni devuelve funciones como resultado. Es una función "normal" que realiza una tarea específica.
 - **Ejemplo**:
@@ -16,6 +74,74 @@ En JavaScript, los conceptos de **funciones de primer orden** y **funciones de o
   ```
 
 En este caso, `saludar` es una función de primer orden porque no interactúa con otras funciones.
+
+---
+
+**Throttling** es una técnica utilizada en programación para controlar la frecuencia con la que se ejecuta una función. A diferencia de **debounce**, que retrasa la ejecución de la función hasta que los eventos se detienen, **throttling** asegura que la función se ejecute a intervalos regulares, incluso si los eventos ocurren con mayor frecuencia.
+
+Esto es útil para manejar eventos que se disparan continuamente, como `scroll`, `mousemove`, o `resize`, y evitar que una función se ejecute demasiadas veces en un corto período de tiempo, lo que podría afectar el rendimiento.
+
+### Ejemplo de Throttling en JavaScript
+
+Aquí tienes un ejemplo básico de cómo implementar y usar throttling:
+
+```javascript
+// Implementación de throttling
+function throttle(func, limit) {
+  let lastFunc;
+  let lastRan;
+  return function (...args) {
+    const context = this;
+    if (!lastRan) {
+      func.apply(context, args);
+      lastRan = Date.now();
+    } else {
+      clearTimeout(lastFunc);
+      lastFunc = setTimeout(() => {
+        if (Date.now() - lastRan >= limit) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        }
+      }, limit - (Date.now() - lastRan));
+    }
+  };
+}
+
+// Ejemplo de uso
+const handleScroll = () => {
+  console.log('Scroll event triggered:', new Date().toISOString());
+};
+
+// Aplicar throttling con un límite de 1000ms
+const throttledScroll = throttle(handleScroll, 1000);
+
+// Escuchar el evento de scroll
+window.addEventListener('scroll', throttledScroll);
+```
+
+### Explicación del código
+
+1. **Función `throttle`**:
+   - Recibe dos parámetros: la función que deseas ejecutar (`func`) y el intervalo de tiempo en milisegundos (`limit`).
+   - Usa dos variables:
+     - `lastRan`: Almacena el momento en que la función se ejecutó por última vez.
+     - `lastFunc`: Almacena un temporizador para ejecutar la función después del intervalo si es necesario.
+
+2. **Uso práctico**:
+   - En este ejemplo, la función `handleScroll` se ejecutará como máximo una vez por segundo (1000ms), incluso si el evento `scroll` se dispara continuamente.
+
+### Diferencia entre Debounce y Throttle
+
+| **Característica**       | **Debounce**                                      | **Throttle**                                      |
+|--------------------------|--------------------------------------------------|--------------------------------------------------|
+| **Ejecución**            | Solo después de que los eventos se detienen.     | A intervalos regulares mientras ocurren eventos. |
+| **Uso común**            | Campos de búsqueda, validación de formularios.   | Scroll, resize, mousemove.                       |
+| **Frecuencia de ejecución** | Baja frecuencia si los eventos son continuos.   | Frecuencia constante según el límite definido.   |
+
+Ambas técnicas son útiles para optimizar el rendimiento en aplicaciones web, dependiendo del caso de uso.
+
+Similar code found with 1 license type
+
 
 ---
 
