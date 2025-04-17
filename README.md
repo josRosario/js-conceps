@@ -1,7 +1,5 @@
 # JavaScript: Conceptos
 
-En JavaScript, los conceptos de **funciones de primer orden** y **funciones de orden superior** están relacionados con cómo se manejan las funciones en el lenguaje. JavaScript trata a las funciones como **ciudadanos de primera clase** (*first-class citizens*), lo que significa que las funciones pueden ser asignadas a variables, pasadas como argumentos y devueltas desde otras funciones. Esto permite trabajar con funciones de manera flexible y poderosa.
-
 ---
 **Debounce** es una técnica utilizada en programación para limitar la frecuencia con la que se ejecuta una función. Es especialmente útil en situaciones donde una función se llama repetidamente en un corto período de tiempo, como en eventos de entrada del usuario (por ejemplo, `keyup`, `scroll`, `resize`). El debounce asegura que la función solo se ejecute después de que haya pasado un período de tiempo específico desde la última vez que se activó el evento.
 
@@ -60,20 +58,6 @@ searchInput.addEventListener('input', (event) => {
 ```
 
 En este caso, la función `fetchResults` se ejecutará solo después de que el usuario deje de escribir durante 300ms, evitando llamadas innecesarias a la API mientras el usuario escribe.
-
----
-### **1. Funciones de Primer Orden**
-- **Definición**: Una función de primer orden es simplemente una función que no toma otras funciones como argumentos ni devuelve funciones como resultado. Es una función "normal" que realiza una tarea específica.
-- **Ejemplo**:
-  ```javascript
-  function saludar(nombre) {
-      return `Hola, ${nombre}`;
-  }
-
-  console.log(saludar('Juan')); // "Hola, Juan"
-  ```
-
-En este caso, `saludar` es una función de primer orden porque no interactúa con otras funciones.
 
 ---
 
@@ -144,6 +128,21 @@ Similar code found with 1 license type
 
 
 ---
+En JavaScript, los conceptos de **funciones de primer orden** y **funciones de orden superior** están relacionados con cómo se manejan las funciones en el lenguaje. JavaScript trata a las funciones como **ciudadanos de primera clase** (*first-class citizens*), lo que significa que las funciones pueden ser asignadas a variables, pasadas como argumentos y devueltas desde otras funciones. Esto permite trabajar con funciones de manera flexible y poderosa.
+
+### **1. Funciones de Primer Orden**
+- **Definición**: Una función de primer orden es simplemente una función que no toma otras funciones como argumentos ni devuelve funciones como resultado. Es una función "normal" que realiza una tarea específica.
+- **Ejemplo**:
+  ```javascript
+  function saludar(nombre) {
+      return `Hola, ${nombre}`;
+  }
+
+  console.log(saludar('Juan')); // "Hola, Juan"
+  ```
+
+En este caso, `saludar` es una función de primer orden porque no interactúa con otras funciones.
+
 
 ### **2. Funciones de Orden Superior**
 - **Definición**: Una función de orden superior es una función que:
