@@ -1,6 +1,55 @@
 # JavaScript: Conceptos
 
 ---
+En JavaScript, las funciones se clasifican como **puras** o **impuras** dependiendo de cómo interactúan con su entorno y si producen efectos secundarios. Aquí está la diferencia:
+
+### **Funciones Puras**
+Una función pura es aquella que:
+1. **Siempre devuelve el mismo resultado** para los mismos argumentos.
+2. **No tiene efectos secundarios** (no modifica variables externas, no realiza operaciones de entrada/salida, etc.).
+
+Ejemplo de una función pura:
+```javascript
+function suma(a, b) {
+  return a + b; // Siempre devuelve el mismo resultado para los mismos argumentos.
+}
+```
+
+Características:
+- No depende de variables externas que puedan cambiar.
+- No modifica el estado global ni interactúa con el entorno externo.
+
+---
+
+### **Funciones Impuras**
+Una función impura es aquella que:
+1. **Puede devolver resultados diferentes** para los mismos argumentos.
+2. **Tiene efectos secundarios**, como modificar variables externas, realizar operaciones de entrada/salida, etc.
+
+Ejemplo de una función impura:
+```javascript
+let contador = 0;
+
+function incrementar() {
+  contador++; // Modifica una variable externa.
+  return contador;
+}
+```
+
+Características:
+- Depende del estado externo o lo modifica.
+- Puede ser impredecible si el estado externo cambia.
+
+---
+
+### Resumen
+- **Puras**: Determinísticas y sin efectos secundarios.
+- **Impuras**: No determinísticas y con efectos secundarios.
+
+Las funciones puras son preferibles en programación funcional porque son más fáciles de probar y depurar.
+
+
+---
 **Debounce** es una técnica utilizada en programación para limitar la frecuencia con la que se ejecuta una función. Es especialmente útil en situaciones donde una función se llama repetidamente en un corto período de tiempo, como en eventos de entrada del usuario (por ejemplo, `keyup`, `scroll`, `resize`). El debounce asegura que la función solo se ejecute después de que haya pasado un período de tiempo específico desde la última vez que se activó el evento.
 
 ### Ejemplo de uso de debounce en JavaScript
