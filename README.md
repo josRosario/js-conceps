@@ -173,7 +173,6 @@ window.addEventListener('scroll', throttledScroll);
 
 Ambas técnicas son útiles para optimizar el rendimiento en aplicaciones web, dependiendo del caso de uso.
 
-Similar code found with 1 license type
 
 
 ---
